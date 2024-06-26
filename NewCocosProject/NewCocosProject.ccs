@@ -3,11 +3,118 @@
   <SolutionFolder>
     <Group ctype="ResourceGroup">
       <RootFolder Name=".">
+        <Folder Name="little">
+          <Image Name="ic_game_poker_big@3x.png" />
+          <Image Name="table_pokerPic_Back@2x.png" />
+          <Image Name="table_pokerPic_C10@2x.png" />
+          <Image Name="table_pokerPic_C2@2x.png" />
+          <Image Name="table_pokerPic_C3@2x.png" />
+          <Image Name="table_pokerPic_C4@2x.png" />
+          <Image Name="table_pokerPic_C5@2x.png" />
+          <Image Name="table_pokerPic_C6@2x.png" />
+          <Image Name="table_pokerPic_C7@2x.png" />
+          <Image Name="table_pokerPic_C8@2x.png" />
+          <Image Name="table_pokerPic_C9@2x.png" />
+          <Image Name="table_pokerPic_CA@2x.png" />
+          <Image Name="table_pokerPic_CJ@2x.png" />
+          <Image Name="table_pokerPic_CK@2x.png" />
+          <Image Name="table_pokerPic_CQ@2x.png" />
+          <Image Name="table_pokerPic_D10@2x.png" />
+          <Image Name="table_pokerPic_D2@2x.png" />
+          <Image Name="table_pokerPic_D3@2x.png" />
+          <Image Name="table_pokerPic_D4@2x.png" />
+          <Image Name="table_pokerPic_D5@2x.png" />
+          <Image Name="table_pokerPic_D6@2x.png" />
+          <Image Name="table_pokerPic_D7@2x.png" />
+          <Image Name="table_pokerPic_D8@2x.png" />
+          <Image Name="table_pokerPic_D9@2x.png" />
+          <Image Name="table_pokerPic_DA@2x.png" />
+          <Image Name="table_pokerPic_DJ@2x.png" />
+          <Image Name="table_pokerPic_DK@2x.png" />
+          <Image Name="table_pokerPic_DQ@2x.png" />
+          <Image Name="table_pokerPic_H10@2x.png" />
+          <Image Name="table_pokerPic_H2@2x.png" />
+          <Image Name="table_pokerPic_H3@2x.png" />
+          <Image Name="table_pokerPic_H4@2x.png" />
+          <Image Name="table_pokerPic_H5@2x.png" />
+          <Image Name="table_pokerPic_H6@2x.png" />
+          <Image Name="table_pokerPic_H7@2x.png" />
+          <Image Name="table_pokerPic_H8@2x.png" />
+          <Image Name="table_pokerPic_H9@2x.png" />
+          <Image Name="table_pokerPic_HA@2x.png" />
+          <Image Name="table_pokerPic_HJ@2x.png" />
+          <Image Name="table_pokerPic_HK@2x.png" />
+          <Image Name="table_pokerPic_HQ@2x.png" />
+          <Image Name="table_pokerPic_S10@2x.png" />
+          <Image Name="table_pokerPic_S2@2x.png" />
+          <Image Name="table_pokerPic_S3@2x.png" />
+          <Image Name="table_pokerPic_S4@2x.png" />
+          <Image Name="table_pokerPic_S5@2x.png" />
+          <Image Name="table_pokerPic_S6@2x.png" />
+          <Image Name="table_pokerPic_S7@2x.png" />
+          <Image Name="table_pokerPic_S8@2x.png" />
+          <Image Name="table_pokerPic_S9@2x.png" />
+          <Image Name="table_pokerPic_SA@2x.png" />
+          <Image Name="table_pokerPic_SJ@2x.png" />
+          <Image Name="table_pokerPic_SK@2x.png" />
+          <Image Name="table_pokerPic_SQ@2x.png" />
+        </Folder>
+        <Folder Name="ludan">
+          <Image Name="lubg.png" />
+          <Image Name="ludantip.png" />
+          <Image Name="road1.png" />
+        </Folder>
+        <Folder Name="nanniuzai">
+          <File Name="nanniuzai.atlas" />
+          <File Name="nanniuzai.atlas.meta" />
+          <File Name="nanniuzai.json" />
+          <File Name="nanniuzai.json.meta" />
+          <Image Name="nanniuzai.png" />
+          <File Name="nanniuzai.png.meta" />
+        </Folder>
+        <Folder Name="nvniuzai">
+          <File Name="nvniuzai.atlas" />
+          <File Name="nvniuzai.atlas.meta" />
+          <File Name="nvniuzai.json" />
+          <File Name="nvniuzai.json.meta" />
+          <Image Name="nvniuzai.png" />
+          <File Name="nvniuzai.png.meta" />
+        </Folder>
+        <Folder Name="pokertype">
+          <Image Name="lose1.png" />
+          <Image Name="lose10.png" />
+          <Image Name="lose2.png" />
+          <Image Name="lose3.png" />
+          <Image Name="lose4.png" />
+          <Image Name="lose5.png" />
+          <Image Name="lose6.png" />
+          <Image Name="lose7.png" />
+          <Image Name="lose8.png" />
+          <Image Name="lose9.png" />
+          <Image Name="win1.png" />
+          <Image Name="win10.png" />
+          <Image Name="win2.png" />
+          <Image Name="win3.png" />
+          <Image Name="win4.png" />
+          <Image Name="win5.png" />
+          <Image Name="win6.png" />
+          <Image Name="win7.png" />
+          <Image Name="win8.png" />
+          <Image Name="win9.png" />
+        </Folder>
+        <Image Name="bg_green.png" />
         <Image Name="btn_buyin_normal.png" />
         <Image Name="btn_joingame_normal.png" />
         <Image Name="HelloWorld.png" />
+        <Image Name="icon3.png" />
+        <Image Name="icon4.png" />
+        <Image Name="icon8.png" />
+        <Image Name="icon9.png" />
         <Project Name="Layer.csd" Type="Layer" />
         <Project Name="MainScene.csd" Type="Scene" />
+        <Image Name="nanniuzai.png" />
+        <Image Name="nvniuzai.png" />
+        <Image Name="Snipaste_2024-06-26_16-30-48.png" />
       </RootFolder>
     </Group>
   </SolutionFolder>
