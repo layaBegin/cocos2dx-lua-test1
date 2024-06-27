@@ -33,6 +33,12 @@
           <Image Name="icon19.png" />
           <Image Name="liansheng.png" />
         </Folder>
+        <Folder Name="coins">
+          <Image Name="flycoins1.png" />
+        </Folder>
+        <Folder Name="font">
+          <TTF Name="fzcqfjt.TTF" />
+        </Folder>
         <Folder Name="little">
           <Image Name="ic_game_poker_big@3x.png" />
           <Image Name="table_pokerPic_Back@2x.png" />
