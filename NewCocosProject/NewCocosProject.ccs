@@ -3,6 +3,36 @@
   <SolutionFolder>
     <Group ctype="ResourceGroup">
       <RootFolder Name=".">
+        <Folder Name="area">
+          <Image Name="1.png" />
+          <Image Name="2.png" />
+          <Image Name="3.png" />
+          <Image Name="4.png" />
+          <Image Name="5.png" />
+          <Image Name="bet_boywin.png" />
+          <Image Name="bet_connects.png" />
+          <Image Name="bet_deuce.png" />
+          <Image Name="bet_fullhouse.png" />
+          <Image Name="bet_girlwin.png" />
+          <Image Name="bet_highcard_onepair.png" />
+          <Image Name="bet_pair.png" />
+          <Image Name="bet_paira.png" />
+          <Image Name="bet_suited.png" />
+          <Image Name="bet_suitedconnects.png" />
+          <Image Name="bet_two_pairs.png" />
+          <Image Name="eitherhandtype.png" />
+          <Image Name="fsy.png" />
+          <Image Name="tsf.png" />
+          <Image Name="winninghandrank.png" />
+        </Folder>
+        <Folder Name="bottom">
+          <Image Name="bg5.png" />
+          <Image Name="Chip.png" />
+          <Image Name="dafuhao.png" />
+          <Image Name="DefualtHead.png" />
+          <Image Name="icon19.png" />
+          <Image Name="liansheng.png" />
+        </Folder>
         <Folder Name="little">
           <Image Name="ic_game_poker_big@3x.png" />
           <Image Name="table_pokerPic_Back@2x.png" />
@@ -105,6 +135,8 @@
         <Image Name="bg_green.png" />
         <Image Name="btn_buyin_normal.png" />
         <Image Name="btn_joingame_normal.png" />
+        <Image Name="countdown.png" />
+        <Image Name="countdown1.png" />
         <Image Name="HelloWorld.png" />
         <Image Name="icon3.png" />
         <Image Name="icon4.png" />

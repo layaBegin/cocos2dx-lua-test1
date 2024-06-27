@@ -56,6 +56,21 @@ bool AppDelegate::applicationDidFinishLaunching()
     // set default FPS
     Director::getInstance()->setAnimationInterval(1.0 / 60.0f);
 
+// 初始化 director
+    auto director = Director::getInstance();
+    auto glview = director->getOpenGLView();
+    if(!glview) {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+        glview = GLViewImpl::createWithRect("My Game", Rect(0, 0, 640, 960));
+#else
+        glview = GLViewImpl::create("My Game");
+#endif
+        director->setOpenGLView(glview);
+    }
+
+    // 设置设计分辨率
+    glview->setDesignResolutionSize(2436, 2436, ResolutionPolicy::NO_BORDER);
+
     // register lua module
     auto engine = LuaEngine::getInstance();
     ScriptEngineManager::getInstance()->setScriptEngine(engine);
