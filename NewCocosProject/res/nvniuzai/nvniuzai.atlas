@@ -1,0 +1,118 @@
+
+nvniuzai.png
+size: 5975,1267
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cowgirl
+  rotate: false
+  xy: 5580, 744
+  size: 390, 518
+  orig: 390, 518
+  offset: 0, 0
+  index: -1
+cowgirl_gray
+  rotate: false
+  xy: 5580, 222
+  size: 388, 517
+  orig: 388, 517
+  offset: 0, 0
+  index: -1
+cowgirl_red
+  rotate: true
+  xy: 4949, 50
+  size: 388, 517
+  orig: 388, 517
+  offset: 0, 0
+  index: -1
+nvniuzai/woman1
+  rotate: false
+  xy: 5, 636
+  size: 819, 626
+  orig: 819, 626
+  offset: 0, 0
+  index: -1
+nvniuzai/woman10
+  rotate: false
+  xy: 1653, 5
+  size: 819, 626
+  orig: 819, 626
+  offset: 0, 0
+  index: -1
+nvniuzai/woman11
+  rotate: false
+  xy: 2477, 5
+  size: 819, 626
+  orig: 819, 626
+  offset: 0, 0
+  index: -1
+nvniuzai/woman12
+  rotate: false
+  xy: 3301, 5
+  size: 819, 626
+  orig: 819, 626
+  offset: 0, 0
+  index: -1
+nvniuzai/woman13
+  rotate: false
+  xy: 4125, 5
+  size: 819, 626
+  orig: 819, 626
+  offset: 0, 0
+  index: -1
+nvniuzai/woman2
+  rotate: false
+  xy: 829, 636
+  size: 819, 626
+  orig: 819, 626
+  offset: 0, 0
+  index: -1
+nvniuzai/woman3
+  rotate: false
+  xy: 1653, 636
+  size: 819, 626
+  orig: 819, 626
+  offset: 0, 0
+  index: -1
+nvniuzai/woman4
+  rotate: false
+  xy: 2477, 636
+  size: 819, 626
+  orig: 819, 626
+  offset: 0, 0
+  index: -1
+nvniuzai/woman5
+  rotate: false
+  xy: 3301, 636
+  size: 819, 626
+  orig: 819, 626
+  offset: 0, 0
+  index: -1
+nvniuzai/woman6
+  rotate: false
+  xy: 4125, 636
+  size: 819, 626
+  orig: 819, 626
+  offset: 0, 0
+  index: -1
+nvniuzai/woman7
+  rotate: true
+  xy: 4949, 443
+  size: 819, 626
+  orig: 819, 626
+  offset: 0, 0
+  index: -1
+nvniuzai/woman8
+  rotate: false
+  xy: 5, 5
+  size: 819, 626
+  orig: 819, 626
+  offset: 0, 0
+  index: -1
+nvniuzai/woman9
+  rotate: false
+  xy: 829, 5
+  size: 819, 626
+  orig: 819, 626
+  offset: 0, 0
+  index: -1

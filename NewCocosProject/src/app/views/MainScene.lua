@@ -5,8 +5,8 @@ MainScene.RESOURCE_FILENAME = "MainScene.csb"
 
 -- 获取UI控件
 MainScene.RESOURCE_BINDING = {
-    ["Btn_1"]   = {["varname"] = "btn"},
-    ["Check_1"] = {["varname"] = "check_1"},
+    -- ["Btn_1"]   = {["varname"] = "btn"},
+    -- ["Check_1"] = {["varname"] = "check_1"},
 }
 
 
@@ -15,9 +15,9 @@ function MainScene:onCreate()
     print("====MainScene:onCreate","****")
 
     -- 按钮使用
-    self.btn:addClickEventListener(function(sender)
-        print("====info","****")
-    end)
+    -- self.btn:addClickEventListener(function(sender)
+    --     print("====info","====")
+    -- end)
  
     -- self.check_1:setVisible(false)
     

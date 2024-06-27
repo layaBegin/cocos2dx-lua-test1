@@ -1,4 +1,6 @@
 /.idea/
 /NewCocosProject/cocosstudio/
-/NewCocosProject/frameworks/
+/NewCocosProject/frameworks/runtime-src/proj.android
+/NewCocosProject/frameworks/runtime-src/proj.ios_mac
+/NewCocosProject/frameworks/runtime-src/proj.win32
 /NewCocosProject/simulator/

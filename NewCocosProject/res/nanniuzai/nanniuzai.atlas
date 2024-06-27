@@ -1,0 +1,118 @@
+
+nanniuzai.png
+size: 6853,1323
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cowboy
+  rotate: false
+  xy: 5645, 123
+  size: 398, 536
+  orig: 398, 536
+  offset: 0, 0
+  index: -1
+cowboy_gray
+  rotate: false
+  xy: 6048, 124
+  size: 398, 535
+  orig: 398, 535
+  offset: 0, 0
+  index: -1
+cowboy_red
+  rotate: false
+  xy: 6451, 124
+  size: 397, 535
+  orig: 397, 535
+  offset: 0, 0
+  index: -1
+nanniuzai/man1
+  rotate: false
+  xy: 5, 664
+  size: 935, 654
+  orig: 935, 654
+  offset: 0, 0
+  index: -1
+nanniuzai/man10
+  rotate: false
+  xy: 3765, 5
+  size: 935, 654
+  orig: 935, 654
+  offset: 0, 0
+  index: -1
+nanniuzai/man11
+  rotate: false
+  xy: 4705, 664
+  size: 935, 654
+  orig: 935, 654
+  offset: 0, 0
+  index: -1
+nanniuzai/man12
+  rotate: false
+  xy: 4705, 5
+  size: 935, 654
+  orig: 935, 654
+  offset: 0, 0
+  index: -1
+nanniuzai/man13
+  rotate: false
+  xy: 5645, 664
+  size: 935, 654
+  orig: 935, 654
+  offset: 0, 0
+  index: -1
+nanniuzai/man2
+  rotate: false
+  xy: 5, 5
+  size: 935, 654
+  orig: 935, 654
+  offset: 0, 0
+  index: -1
+nanniuzai/man3
+  rotate: false
+  xy: 945, 664
+  size: 935, 654
+  orig: 935, 654
+  offset: 0, 0
+  index: -1
+nanniuzai/man4
+  rotate: false
+  xy: 945, 5
+  size: 935, 654
+  orig: 935, 654
+  offset: 0, 0
+  index: -1
+nanniuzai/man5
+  rotate: false
+  xy: 1885, 664
+  size: 935, 654
+  orig: 935, 654
+  offset: 0, 0
+  index: -1
+nanniuzai/man6
+  rotate: false
+  xy: 1885, 5
+  size: 935, 654
+  orig: 935, 654
+  offset: 0, 0
+  index: -1
+nanniuzai/man7
+  rotate: false
+  xy: 2825, 664
+  size: 935, 654
+  orig: 935, 654
+  offset: 0, 0
+  index: -1
+nanniuzai/man8
+  rotate: false
+  xy: 2825, 5
+  size: 935, 654
+  orig: 935, 654
+  offset: 0, 0
+  index: -1
+nanniuzai/man9
+  rotate: false
+  xy: 3765, 664
+  size: 935, 654
+  orig: 935, 654
+  offset: 0, 0
+  index: -1
