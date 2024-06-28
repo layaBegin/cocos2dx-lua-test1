@@ -17,6 +17,7 @@ MainScene.RESOURCE_BINDING = {
     ["Button_win_fullhouse"] = {["varname"] = "Button_win_fullhouse"},
     ["Button_win_four"] = {["varname"] = "Button_win_four"},
 
+    ["Button_1_0"] = {["varname"] = "Button_1_0"},
 
     
 
@@ -32,6 +33,7 @@ function MainScene:onCreate()
     -- 按钮使用
     self.Button_man:addClickEventListener(function(sender)
         print("====Button_man","====")
+        self:flyChipToButton(self.Button_man)
     end)
 
     self.Button_tie:addClickEventListener(function(sender)
@@ -73,6 +75,40 @@ function MainScene:onCreate()
     self.Button_win_four:addClickEventListener(function(sender)
         print("====Button_win_four","====")
     end)
+
+
+    function MainScene:flyChipToButton(targetButton)
+        -- 创建筹码精灵
+        local chip = cc.Sprite:create("chip1.png")
+        self:addChild(chip)
+        
+        -- -- 设置筹码初始位置
+        -- local startPosition = cc.p(display.cx, display.cy)
+        local  x, y = self.Button_1_0:getPosition()
+        print("====startPosition1:",x,y)
+        local startPos = self.Button_1_0:getParent():convertToWorldSpace(cc.p(x,y))
+
+        chip:setPosition(startPos)
+    
+        -- 获取目标按钮的位置
+        local endPositionX,endPositionY = targetButton:getPosition()
+    
+        -- -- 将目标位置转换为世界坐标系
+        local endPosition = targetButton:getParent():convertToWorldSpace(cc.p(endPositionX,endPositionY))
+    
+        -- 创建飞行动作
+        local moveAction = cc.MoveTo:create(0.3, endPosition)
+        local callback = cc.CallFunc:create(function()
+            -- 动作完成后的回调，可以在这里添加其他逻辑
+            print("===Chip reached target button")
+            -- chip:removeFromParent()  -- 移除筹码精灵
+        end)
+        local sequence = cc.Sequence:create(moveAction, callback)
+    
+        -- 运行动作
+        chip:runAction(sequence)
+    end
+
 
 
     -- self.check_1:setVisible(false)

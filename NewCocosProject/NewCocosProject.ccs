@@ -141,6 +141,7 @@
         <Image Name="bg_green.png" />
         <Image Name="btn_buyin_normal.png" />
         <Image Name="btn_joingame_normal.png" />
+        <Image Name="chip1.png" />
         <Image Name="countdown.png" />
         <Image Name="countdown1.png" />
         <Image Name="HelloWorld.png" />
