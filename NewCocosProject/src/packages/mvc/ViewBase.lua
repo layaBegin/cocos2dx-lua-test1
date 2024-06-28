@@ -1,4 +1,4 @@
-
+-- ViewBase.lua
 local ViewBase = class("ViewBase", cc.Node)
 
 function ViewBase:ctor(app, name)
@@ -42,10 +42,25 @@ function ViewBase:createResoueceNode(resourceFilename)
     self:addChild(self.resourceNode_)
 end
 
+function ViewBase:findNodeByName(node, name)
+    if node:getName() == name then
+        return node
+    end
+    local children = node:getChildren()
+    for _, child in ipairs(children) do
+        local result = self:findNodeByName(child, name)
+        if result then
+            return result
+        end
+    end
+    return nil
+end
+
 function ViewBase:createResoueceBinding(binding)
     assert(self.resourceNode_, "ViewBase:createResoueceBinding() - not load resource node")
     for nodeName, nodeBinding in pairs(binding) do
-        local node = self.resourceNode_:getChildByName(nodeName)
+        local node = self:findNodeByName(self.resourceNode_, nodeName)
+        assert(node, string.format("ViewBase:createResoueceBinding() - can't find node named \"%s\"", nodeName))
         if nodeBinding.varname then
             self[nodeBinding.varname] = node
         end
