@@ -38,42 +38,52 @@ function MainScene:onCreate()
 
     self.Button_tie:addClickEventListener(function(sender)
         print("====Button_tie","====")
+        self:flyChipToButton(self.Button_tie)
     end)
 
     self.Button_woman:addClickEventListener(function(sender)
         print("====Button_woman","====")
+        self:flyChipToButton(self.Button_woman)
     end)
  
     self.Button_one_tonghua:addClickEventListener(function(sender)
         print("====Button_one_tonghua","====")
+        self:flyChipToButton(self.Button_one_tonghua)
     end)
 
     self.Button_one_pair:addClickEventListener(function(sender)
         print("====Button_one_pair","====")
+        self:flyChipToButton(self.Button_one_pair)
     end)
 
     self.Button_one_A:addClickEventListener(function(sender)
         print("====Button_one_A","====")
+        self:flyChipToButton(self.Button_one_A)
     end)
 
     self.Button_win_gaopai:addClickEventListener(function(sender)
         print("====Button_win_gaopai","====")
+        self:flyChipToButton(self.Button_win_gaopai)
     end)
 
     self.Button_win_twopair:addClickEventListener(function(sender)
         print("====Button_win_twopair","====")
+        self:flyChipToButton(self.Button_win_twopair)
     end)
 
     self.Button_win_santiao:addClickEventListener(function(sender)
         print("====Button_win_santiao","====")
+        self:flyChipToButton(self.Button_win_santiao)
     end)
 
     self.Button_win_fullhouse:addClickEventListener(function(sender)
         print("====Button_win_fullhouse","====")
+        self:flyChipToButton(self.Button_win_fullhouse)
     end)
 
     self.Button_win_four:addClickEventListener(function(sender)
         print("====Button_win_four","====")
+        self:flyChipToButton(self.Button_win_four)
     end)
 
 
