@@ -8,6 +8,8 @@ MainScene.RESOURCE_BINDING = {
     -- 筹码起始位置
     ["Button_1_0"] = {["varname"] = "Button_1_0"},
 
+    ["Node_Card"] = {["varname"] = "Node_Card"},
+
     ["Button_man"]   = {["varname"] = "Button_man"},
     ["Button_tie"] = {["varname"] = "Button_tie"},
     ["Button_woman"] = {["varname"] = "Button_woman"},
@@ -184,6 +186,19 @@ function MainScene:onCreate()
     ]]
 end
 
+-- 更新label
+function MainScene:updateScoreLabel(scoreKey)
+    local labelAll = self.scoreAllLabels[scoreKey]
+    local labelMe = self.scoreMeLabels[scoreKey]
+    if labelAll then
+        labelAll:setString(tostring(self.scores[scoreKey]))
+    end
+    if labelMe then
+        self.scoreMeImages[scoreKey]:setVisible(true)
+        labelMe:setString(tostring(self.scores[scoreKey]))
+    end
+end
+
 
 function MainScene:initCardPositions()
     self.cardBackImage = "little/card_back.png"
@@ -199,22 +214,22 @@ function MainScene:initCardPositions()
 
     -- 公共牌位置
     self.publicCardPositions = {
-        cc.p(display.cx - 150, display.cy + 200),
-        cc.p(display.cx - 75, display.cy + 200),
-        cc.p(display.cx, display.cy + 200),
-        cc.p(display.cx + 75, display.cy + 200),
-        cc.p(display.cx + 150, display.cy + 200)
+        cc.p(- 150, 0),
+        cc.p(- 75, 0),
+        cc.p(0, 0),
+        cc.p(75, 0),
+        cc.p(150, 0)
     }
 
     -- 左右两人手牌位置
     self.leftHandPositions = {
-        cc.p(display.cx - 400, display.cy - 200),
-        cc.p(display.cx - 300, display.cy - 200)
+        cc.p(- 500, - 200),
+        cc.p(- 400, - 200)
     }
 
     self.rightHandPositions = {
-        cc.p(display.cx + 300, display.cy - 200),
-        cc.p(display.cx + 400, display.cy - 200)
+        cc.p(400, - 200),
+        cc.p(500, - 200)
     }
 
     -- 初始化卡牌
@@ -226,8 +241,8 @@ function MainScene:initCardPositions()
     for i, pos in ipairs(self.publicCardPositions) do
         local card = cc.Sprite:create(self.cardBackImage)
         if card then
-            card:setPosition(display.cx, display.cy + 200) -- 牌堆位置
-            self:addChild(card)
+            card:setPosition(0, 300) -- 牌堆位置
+            self.Node_Card:addChild(card)
             table.insert(self.publicCards, card)
         else
             print("Failed to create public card " .. i)
@@ -238,8 +253,8 @@ function MainScene:initCardPositions()
     for i, pos in ipairs(self.leftHandPositions) do
         local card = cc.Sprite:create(self.cardBackImage)
         if card then
-            card:setPosition(display.cx, display.cy + 200) -- 牌堆位置
-            self:addChild(card)
+            card:setPosition(0, 300) -- 牌堆位置
+            self.Node_Card:addChild(card)
             table.insert(self.leftHandCards, card)
         else
             print("Failed to create left hand card " .. i)
@@ -250,8 +265,8 @@ function MainScene:initCardPositions()
     for i, pos in ipairs(self.rightHandPositions) do
         local card = cc.Sprite:create(self.cardBackImage)
         if card then
-            card:setPosition(display.cx, display.cy + 200) -- 牌堆位置
-            self:addChild(card)
+            self.Node_Card:addChild(card)
+            card:setPosition(0, 300) -- 牌堆位置
             table.insert(self.rightHandCards, card)
         else
             print("Failed to create right hand card " .. i)
@@ -259,44 +274,81 @@ function MainScene:initCardPositions()
     end
 end
 
-function MainScene:updateScoreLabel(scoreKey)
-    local labelAll = self.scoreAllLabels[scoreKey]
-    local labelMe = self.scoreMeLabels[scoreKey]
-    if labelAll then
-        labelAll:setString(tostring(self.scores[scoreKey]))
+
+
+
+-- 发牌
+-- function MainScene:dealCards()
+--     -- 发公共牌
+--     for i, card in ipairs(self.publicCards) do
+--         local moveAction = cc.MoveTo:create(0.2, self.publicCardPositions[i])
+--         card:runAction(moveAction)
+--     end
+
+--     -- 发左边手牌
+--     for i, card in ipairs(self.leftHandCards) do
+--         local moveAction = cc.MoveTo:create(0.2, self.leftHandPositions[i])
+--         card:runAction(moveAction)
+--     end
+
+--     -- 发右边手牌
+--     for i, card in ipairs(self.rightHandCards) do
+--         local moveAction = cc.MoveTo:create(0.2, self.rightHandPositions[i])
+--         card:runAction(moveAction)
+--     end
+
+--     -- 翻开第一张公共牌
+--     local delay = cc.DelayTime:create(0.5) -- 延迟时间，确保所有牌都发完
+--     local flipAction = cc.CallFunc:create(function()
+--         self:flipCard(self.publicCards[1], self.cardFrontImages[1])
+--     end)
+--     local sequence = cc.Sequence:create(delay, flipAction)
+--     self:runAction(sequence)
+-- end
+
+--发牌
+function MainScene:dealCards()
+    -- 先将所有牌发到同一个位置
+    local moveTime = 0.2
+
+    local function moveCardsToStack(cards, positions)
+        for i, card in ipairs(cards) do
+            local moveAction = cc.MoveTo:create(moveTime, positions)
+            card:runAction(moveAction)
+        end
     end
-    if labelMe then
-        self.scoreMeImages[scoreKey]:setVisible(true)
-        labelMe:setString(tostring(self.scores[scoreKey]))
-    end
+
+    -- 发到公共牌堆
+    moveCardsToStack(self.publicCards, self.publicCardPositions[1])
+    -- 发到左边手牌堆
+    moveCardsToStack(self.leftHandCards, self.leftHandPositions[1])
+    -- 发到右边手牌堆
+    moveCardsToStack(self.rightHandCards, self.rightHandPositions[1])
+
+    -- 延迟一段时间后展开牌
+    local delay = cc.DelayTime:create(moveTime + 0.1) -- 发牌时间 + 额外延迟
+    local unfoldAction = cc.CallFunc:create(function()
+        self:unfoldCards(self.publicCards, self.publicCardPositions)
+        self:unfoldCards(self.leftHandCards, self.leftHandPositions)
+        self:unfoldCards(self.rightHandCards, self.rightHandPositions)
+
+        -- 翻开第一张公共牌
+        local flipDelay = cc.DelayTime:create(1.0) -- 延迟时间，确保所有牌都展开
+        local flipAction = cc.CallFunc:create(function()
+            self:flipCard(self.publicCards[1], self.cardFrontImages[1])
+        end)
+        local sequence = cc.Sequence:create(flipDelay, flipAction)
+        self:runAction(sequence)
+    end)
+    local sequence = cc.Sequence:create(delay, unfoldAction)
+    self:runAction(sequence)
 end
 
-function MainScene:dealCards()
-    -- 发公共牌
-    for i, card in ipairs(self.publicCards) do
-        local moveAction = cc.MoveTo:create(0.5, self.publicCardPositions[i])
+function MainScene:unfoldCards(cards, positions)
+    for i, card in ipairs(cards) do
+        local moveAction = cc.MoveTo:create(0.2, positions[i])
         card:runAction(moveAction)
     end
-
-    -- 发左边手牌
-    for i, card in ipairs(self.leftHandCards) do
-        local moveAction = cc.MoveTo:create(0.5, self.leftHandPositions[i])
-        card:runAction(moveAction)
-    end
-
-    -- 发右边手牌
-    for i, card in ipairs(self.rightHandCards) do
-        local moveAction = cc.MoveTo:create(0.5, self.rightHandPositions[i])
-        card:runAction(moveAction)
-    end
-
-    -- 翻开第一张公共牌
-    local delay = cc.DelayTime:create(2.0) -- 延迟时间，确保所有牌都发完
-    local flipAction = cc.CallFunc:create(function()
-        self:flipCard(self.publicCards[1], self.cardFrontImages[1])
-    end)
-    local sequence = cc.Sequence:create(delay, flipAction)
-    self:runAction(sequence)
 end
 
 -- 翻牌
@@ -305,26 +357,18 @@ function MainScene:flipCard(card, frontImage)
         print("Card is nil, cannot flip")
         return
     end
-
-    local flipTime = 0.5
-
-    -- 这样写有问题，明天来看
-    local flipToBack = cc.OrbitCamera:create(flipTime / 2, 1, 0, 0, -90, 0, 0)
-    local flipToFront = cc.OrbitCamera:create(flipTime / 2, 1, 0, 90, -90, 0, 0)
-
+    local flipTime = 0.3
+    local scaleToZero = cc.ScaleTo:create(flipTime / 2, 0, 1)
+    local scaleToOne = cc.ScaleTo:create(flipTime / 2, 1, 1)
     local function onFlipEnd()
-        local newCard = cc.Sprite:create(frontImage)
-        if newCard then
-            newCard:setPosition(card:getPosition())
-            card:removeFromParent()
-            self:addChild(newCard)
-            newCard:runAction(flipToFront)
-        else
-            print("Failed to create front image sprite with image: " .. frontImage)
-        end
+        card:setTexture(frontImage) -- 翻转到正面图片
     end
 
-    local flipSequence = cc.Sequence:create(flipToBack, cc.CallFunc:create(onFlipEnd))
+    local flipSequence = cc.Sequence:create(
+        scaleToZero,
+        cc.CallFunc:create(onFlipEnd),
+        scaleToOne
+    )
     card:runAction(flipSequence)
 end
 
