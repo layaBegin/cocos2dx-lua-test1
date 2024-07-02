@@ -16,17 +16,17 @@ MainScene.RESOURCE_BINDING = {
     ["Text_Clock"] = {["varname"] = "countdownLabel"},
     
 
-    ["Button_man"]   = {["varname"] = "Button_man"},
-    ["Button_tie"] = {["varname"] = "Button_tie"},
-    ["Button_woman"] = {["varname"] = "Button_woman"},
-    ["Button_one_tonghua"] = {["varname"] = "Button_one_tonghua"},
-    ["Button_one_pair"] = {["varname"] = "Button_one_pair"},
-    ["Button_one_A"] = {["varname"] = "Button_one_A"},
-    ["Button_win_gaopai"] = {["varname"] = "Button_win_gaopai"},
-    ["Button_win_twopair"] = {["varname"] = "Button_win_twopair"},
-    ["Button_win_santiao"] = {["varname"] = "Button_win_santiao"},
-    ["Button_win_fullhouse"] = {["varname"] = "Button_win_fullhouse"},
-    ["Button_win_four"] = {["varname"] = "Button_win_four"},
+    ["Button_man"]   = {["varname"] = "areaButton_1"},
+    ["Button_tie"] = {["varname"] = "areaButton_2"},
+    ["Button_woman"] = {["varname"] = "areaButton_3"},
+    ["Button_one_tonghua"] = {["varname"] = "areaButton_4"},
+    ["Button_one_pair"] = {["varname"] = "areaButton_5"},
+    ["Button_one_A"] = {["varname"] = "areaButton_6"},
+    ["Button_win_gaopai"] = {["varname"] = "areaButton_7"},
+    ["Button_win_twopair"] = {["varname"] = "areaButton_8"},
+    ["Button_win_santiao"] = {["varname"] = "areaButton_9"},
+    ["Button_win_fullhouse"] = {["varname"] = "areaButton_10"},
+    ["Button_win_four"] = {["varname"] = "areaButton_11"},
 
     ["targetNode_1"] = {["varname"] = "targetNode_1"},
     ["targetNode_2"] = {["varname"] = "targetNode_2"},
@@ -39,8 +39,7 @@ MainScene.RESOURCE_BINDING = {
     ["targetNode_9"] = {["varname"] = "targetNode_9"},
     ["targetNode_10"] = {["varname"] = "targetNode_10"},
     ["targetNode_11"] = {["varname"] = "targetNode_11"},
-   
-    
+
 
     ["Image_me_1"] = {["varname"] = "Image_me_1"},
     ["Image_me_2"] = {["varname"] = "Image_me_2"},
@@ -78,8 +77,6 @@ MainScene.RESOURCE_BINDING = {
     ["Text_me_10"] = {["varname"] = "Text_me_10"},
     ["Text_me_11"] = {["varname"] = "Text_me_11"},
 
-    
-
 }
 
 
@@ -87,11 +84,20 @@ function MainScene:onCreate()
     printf("resource node = %s", tostring(self:getResourceNode()))
     print("====MainScene:onCreate","****")
     -- 初始化分数
+    self.areaBtnArr = {}
     self.targetNodeArr = {}
     self.scores = {}
     self.scoreMeImages = {}
     self.scoreAllLabels = {}
     self.scoreMeLabels = {}
+
+    for i = 1, 11 do
+        self.areaBtnArr[i] = self["areaButton_" .. i]
+        self.areaBtnArr[i]:addClickEventListener(function(sender)
+            print("====Button_man","====")
+            self:flyChipToButton(i)
+        end)
+    end
     for i = 1, 11 do
         self.targetNodeArr[i] = self["targetNode_" .. i]
     end
@@ -114,100 +120,89 @@ function MainScene:onCreate()
         self.scoreMeLabels[i]:setString("")
     end
 
-    -- 按钮使用
-    self.Button_man:addClickEventListener(function(sender)
-        print("====Button_man","====")
-        self:flyChipToButton(1)
-    end)
-
-    self.Button_tie:addClickEventListener(function(sender)
-        print("====Button_tie","====")
-        self:flyChipToButton(2)
-    end)
-
-    self.Button_woman:addClickEventListener(function(sender)
-        print("====Button_woman","====")
-        self:flyChipToButton(3)
-    end)
- 
-    self.Button_one_tonghua:addClickEventListener(function(sender)
-        print("====Button_one_tonghua","====")
-        self:flyChipToButton(4)
-    end)
-
-    self.Button_one_pair:addClickEventListener(function(sender)
-        print("====Button_one_pair","====")
-        self:flyChipToButton(5)
-    end)
-
-    self.Button_one_A:addClickEventListener(function(sender)
-        print("====Button_one_A","====")
-        self:flyChipToButton(6)
-    end)
-
-    self.Button_win_gaopai:addClickEventListener(function(sender)
-        print("====Button_win_gaopai","====")
-        self:flyChipToButton(7)
-    end)
-
-    self.Button_win_twopair:addClickEventListener(function(sender)
-        print("====Button_win_twopair","====")
-        self:flyChipToButton(8)
-    end)
-
-    self.Button_win_santiao:addClickEventListener(function(sender)
-        print("====Button_win_santiao","====")
-        self:flyChipToButton(9)
-    end)
-
-    self.Button_win_fullhouse:addClickEventListener(function(sender)
-        print("====Button_win_fullhouse","====")
-        self:flyChipToButton(10)
-    end)
-
-    self.Button_win_four:addClickEventListener(function(sender)
-        print("====Button_win_four","====")
-        self:flyChipToButton(11)
-    end)
-
-
     -- 初始化倒计时
     self:initCountdown()
+    -- 初始化倒计时
+    self:startGame()
     -- 开始倒计时
 
-    -- 初始化卡牌位置
-    -- self:initCardPositions()
-    -- -- 发牌
-    -- self:dealCards()
-
-    -- self.check_1:setVisible(false)
-    --[[ you can create scene with following comment code instead of using csb file.
-    -- add background image
-    display.newSprite("HelloWorld.png")
-        :move(display.center)
-        :addTo(self)
-
-    -- add HelloWorld label
-    cc.Label:createWithSystemFont("Hello World", "Arial", 40)
-        :move(display.cx, display.cy + 200)
-        :addTo(self)
-    ]]
 end
-
 
 --倒计时
 function MainScene:initCountdown()
-    
     -- 创建倒计时对象，传入圆形图片路径
     self.countdown = Countdown.new("countdown1.png", self.countdownLabel)
     self.countdown:setOnComplete(function()
         print("====Countdown complete!")
+        self:stopBetting()
+
     end)
     self.Node_clock:addChild(self.countdown)
-
-    -- 开始倒计时
-    self.countdown:start()
+   
 end
+
+function MainScene:startGame()
+    -- 开始下注
+    self:startBetting()
+
+    -- 使用定时器无限循环游戏流程
+    local function updateGame(dt)
+        -- self:stopBetting()
+        -- self:resetGame()
+        self:startBetting()
+    end
+    cc.Director:getInstance():getScheduler():scheduleScriptFunc(updateGame, 15, false)
+end
+
+function MainScene:startBetting()
+    -- 初始化卡牌位置
+    self:initCardPositions()
+    -- 发牌并翻开第一张公共牌
+    self:dealCards()
+
+    local delay = cc.DelayTime:create(1) -- 
+    local countDownAction = cc.CallFunc:create(function()
+        -- 启用倒计时
+        self.countdown:start()
+    end)
+    local sequence = cc.Sequence:create(delay, countDownAction)
+    self:runAction(sequence)
+    -- 激活区域按钮
+    self:setBtnEnabled(true)
+end
+
+
+function MainScene:stopBetting()
+    print("===进入停止下注")
+    self:setBtnEnabled(false)
+    -- 停止下注，翻开所有公共牌和手牌
+    -- for i = 2, #self.publicCards do
+    --     self:flipCard(self.publicCards[i], self.cardFrontImages[i])
+    -- end
+
+    -- -- 假设手牌也需要翻开，这里也翻开手牌
+    -- for i, card in ipairs(self.leftHandCards) do
+    --     self:flipCard(card, self.cardFrontImages[i + 5])  -- 示例，手牌的正面图片
+    -- end
+    -- for i, card in ipairs(self.rightHandCards) do
+    --     self:flipCard(card, self.cardFrontImages[i + 7])  -- 示例，手牌的正面图片
+    -- end
+
+    -- -- 结算输赢（需要实现具体逻辑）
+    -- self:settleGame()
+
+    -- -- 清空牌桌，准备下一轮游戏
+    -- self:resetGame()
+end
+
+
+function MainScene:setBtnEnabled(enable)
+    for i = 1, 11 do
+        self.areaBtnArr[i]:setEnabled(enable)
+    end
+
+end
+
 
 -- 更新label
 function MainScene:updateScoreLabel(scoreKey)
