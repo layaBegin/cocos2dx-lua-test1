@@ -1,4 +1,5 @@
 local Countdown = require("app.views.Countdown")
+local CardManager = require("app.views.CardManager")
 
 local MainScene = class("MainScene", cc.load("mvc").ViewBase)
 
@@ -122,7 +123,8 @@ function MainScene:onCreate()
 
     -- 初始化倒计时
     self:initCountdown()
-    -- 初始化倒计时
+    -- 初始化卡牌管理器
+    self.cardManager = CardManager.new(self.Node_Card)
     self:startGame()
     -- 开始倒计时
 
@@ -138,6 +140,18 @@ function MainScene:initCountdown()
 
     end)
     self.Node_clock:addChild(self.countdown)
+
+end
+
+--倒计时
+function MainScene:initCardManager()
+    -- 创建倒计时对象，传入圆形图片路径
+    self.cardManager = CardManager.new()
+    self.cardManager:setOnComplete(function()
+        print("====cardManager complete!")
+
+    end)
+    self.Node_Card:addChild(self.cardManager)
    
 end
 
@@ -155,10 +169,10 @@ function MainScene:startGame()
 end
 
 function MainScene:startBetting()
-    -- 初始化卡牌位置
-    self:initCardPositions()
+    -- -- 初始化卡牌位置
+    -- self:initCardPositions()
     -- 发牌并翻开第一张公共牌
-    self:dealCards()
+    self.cardManager:dealCards()
 
     local delay = cc.DelayTime:create(1) -- 
     local countDownAction = cc.CallFunc:create(function()
@@ -218,79 +232,79 @@ function MainScene:updateScoreLabel(scoreKey)
 end
 
 
-function MainScene:initCardPositions()
-    self.cardBackImage = "little/card_back.png"
-    self.cardFrontImages = {
-        "little/card_2_2.png", -- 第一张公共牌正面图片
-        "little/card_2_2.png",
-        "little/card_2_2.png",
-        "little/card_2_2.png",
-        "little/card_2_2.png",
-        "little/card_2_2.png",
-        "little/card_2_2.png"
-    }
+-- function MainScene:initCardPositions()
+--     self.cardBackImage = "little/card_back.png"
+--     self.cardFrontImages = {
+--         "little/card_2_2.png", -- 第一张公共牌正面图片
+--         "little/card_2_2.png",
+--         "little/card_2_2.png",
+--         "little/card_2_2.png",
+--         "little/card_2_2.png",
+--         "little/card_2_2.png",
+--         "little/card_2_2.png"
+--     }
 
-    -- 公共牌位置
-    self.publicCardPositions = {
-        cc.p(- 150, 0),
-        cc.p(- 75, 0),
-        cc.p(0, 0),
-        cc.p(75, 0),
-        cc.p(150, 0)
-    }
+--     -- 公共牌位置
+--     self.publicCardPositions = {
+--         cc.p(- 150, 0),
+--         cc.p(- 75, 0),
+--         cc.p(0, 0),
+--         cc.p(75, 0),
+--         cc.p(150, 0)
+--     }
 
-    -- 左右两人手牌位置
-    self.leftHandPositions = {
-        cc.p(- 550, - 200),
-        cc.p(- 500, - 200)
-    }
+--     -- 左右两人手牌位置
+--     self.leftHandPositions = {
+--         cc.p(- 550, - 200),
+--         cc.p(- 500, - 200)
+--     }
 
-    self.rightHandPositions = {
-        cc.p(500, - 200),
-        cc.p(550, - 200)
-    }
+--     self.rightHandPositions = {
+--         cc.p(500, - 200),
+--         cc.p(550, - 200)
+--     }
 
-    -- 初始化卡牌
-    self.publicCards = {}
-    self.leftHandCards = {}
-    self.rightHandCards = {}
+--     -- 初始化卡牌
+--     self.publicCards = {}
+--     self.leftHandCards = {}
+--     self.rightHandCards = {}
 
-    -- 创建公共牌
-    for i, pos in ipairs(self.publicCardPositions) do
-        local card = cc.Sprite:create(self.cardBackImage)
-        if card then
-            card:setPosition(0, 300) -- 牌堆位置
-            self.Node_Card:addChild(card)
-            table.insert(self.publicCards, card)
-        else
-            print("Failed to create public card " .. i)
-        end
-    end
+--     -- 创建公共牌
+--     for i, pos in ipairs(self.publicCardPositions) do
+--         local card = cc.Sprite:create(self.cardBackImage)
+--         if card then
+--             card:setPosition(0, 300) -- 牌堆位置
+--             self.Node_Card:addChild(card)
+--             table.insert(self.publicCards, card)
+--         else
+--             print("Failed to create public card " .. i)
+--         end
+--     end
 
-    -- 创建左边手牌
-    for i, pos in ipairs(self.leftHandPositions) do
-        local card = cc.Sprite:create(self.cardBackImage)
-        if card then
-            card:setPosition(0, 300) -- 牌堆位置
-            self.Node_Card:addChild(card)
-            table.insert(self.leftHandCards, card)
-        else
-            print("Failed to create left hand card " .. i)
-        end
-    end
+--     -- 创建左边手牌
+--     for i, pos in ipairs(self.leftHandPositions) do
+--         local card = cc.Sprite:create(self.cardBackImage)
+--         if card then
+--             card:setPosition(0, 300) -- 牌堆位置
+--             self.Node_Card:addChild(card)
+--             table.insert(self.leftHandCards, card)
+--         else
+--             print("Failed to create left hand card " .. i)
+--         end
+--     end
 
-    -- 创建右边手牌
-    for i, pos in ipairs(self.rightHandPositions) do
-        local card = cc.Sprite:create(self.cardBackImage)
-        if card then
-            self.Node_Card:addChild(card)
-            card:setPosition(0, 300) -- 牌堆位置
-            table.insert(self.rightHandCards, card)
-        else
-            print("Failed to create right hand card " .. i)
-        end
-    end
-end
+--     -- 创建右边手牌
+--     for i, pos in ipairs(self.rightHandPositions) do
+--         local card = cc.Sprite:create(self.cardBackImage)
+--         if card then
+--             self.Node_Card:addChild(card)
+--             card:setPosition(0, 300) -- 牌堆位置
+--             table.insert(self.rightHandCards, card)
+--         else
+--             print("Failed to create right hand card " .. i)
+--         end
+--     end
+-- end
 
 
 --发牌
