@@ -223,13 +223,13 @@ function MainScene:initCardPositions()
 
     -- 左右两人手牌位置
     self.leftHandPositions = {
-        cc.p(- 500, - 200),
-        cc.p(- 400, - 200)
+        cc.p(- 550, - 200),
+        cc.p(- 500, - 200)
     }
 
     self.rightHandPositions = {
-        cc.p(400, - 200),
-        cc.p(500, - 200)
+        cc.p(500, - 200),
+        cc.p(550, - 200)
     }
 
     -- 初始化卡牌
@@ -275,37 +275,6 @@ function MainScene:initCardPositions()
 end
 
 
-
-
--- 发牌
--- function MainScene:dealCards()
---     -- 发公共牌
---     for i, card in ipairs(self.publicCards) do
---         local moveAction = cc.MoveTo:create(0.2, self.publicCardPositions[i])
---         card:runAction(moveAction)
---     end
-
---     -- 发左边手牌
---     for i, card in ipairs(self.leftHandCards) do
---         local moveAction = cc.MoveTo:create(0.2, self.leftHandPositions[i])
---         card:runAction(moveAction)
---     end
-
---     -- 发右边手牌
---     for i, card in ipairs(self.rightHandCards) do
---         local moveAction = cc.MoveTo:create(0.2, self.rightHandPositions[i])
---         card:runAction(moveAction)
---     end
-
---     -- 翻开第一张公共牌
---     local delay = cc.DelayTime:create(0.5) -- 延迟时间，确保所有牌都发完
---     local flipAction = cc.CallFunc:create(function()
---         self:flipCard(self.publicCards[1], self.cardFrontImages[1])
---     end)
---     local sequence = cc.Sequence:create(delay, flipAction)
---     self:runAction(sequence)
--- end
-
 --发牌
 function MainScene:dealCards()
     -- 先将所有牌发到同一个位置
@@ -326,11 +295,18 @@ function MainScene:dealCards()
     moveCardsToStack(self.rightHandCards, self.rightHandPositions[1])
 
     -- 延迟一段时间后展开牌
-    local delay = cc.DelayTime:create(moveTime + 0.1) -- 发牌时间 + 额外延迟
+    local delay = cc.DelayTime:create(moveTime + 0.2) -- 发牌时间 + 额外延迟
     local unfoldAction = cc.CallFunc:create(function()
-        self:unfoldCards(self.publicCards, self.publicCardPositions)
-        self:unfoldCards(self.leftHandCards, self.leftHandPositions)
-        self:unfoldCards(self.rightHandCards, self.rightHandPositions)
+        -- self:unfoldCards(self.publicCards, self.publicCardPositions)
+        -- self:unfoldCards(self.leftHandCards, self.leftHandPositions)
+        -- self:unfoldCards(self.rightHandCards, self.rightHandPositions)
+
+        -- 展开公共牌，无旋转
+        self:unfoldCards(self.publicCards, self.publicCardPositions, {0, 0, 0, 0, 0})
+        -- 展开左边手牌，有旋转
+        self:unfoldCards(self.leftHandCards, self.leftHandPositions, {-15, 0})
+        -- 展开右边手牌，有旋转
+        self:unfoldCards(self.rightHandCards, self.rightHandPositions, {-15, 0})
 
         -- 翻开第一张公共牌
         local flipDelay = cc.DelayTime:create(1.0) -- 延迟时间，确保所有牌都展开
@@ -344,12 +320,15 @@ function MainScene:dealCards()
     self:runAction(sequence)
 end
 
-function MainScene:unfoldCards(cards, positions)
+function MainScene:unfoldCards(cards, positions, rotations)
     for i, card in ipairs(cards) do
-        local moveAction = cc.MoveTo:create(0.2, positions[i])
-        card:runAction(moveAction)
+        local moveAction = cc.MoveTo:create(0.3, positions[i])
+        local rotateAction = cc.RotateTo:create(0.3, rotations[i] or 0)
+        local spawnAction = cc.Spawn:create(moveAction, rotateAction)
+        card:runAction(spawnAction)
     end
 end
+
 
 -- 翻牌
 function MainScene:flipCard(card, frontImage)
