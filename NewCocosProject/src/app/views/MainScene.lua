@@ -124,7 +124,7 @@ function MainScene:onCreate()
     -- 初始化倒计时
     self:initCountdown()
     -- 初始化卡牌管理器
-    self.cardManager = CardManager.new(self.Node_Card)
+    self:initCardManager()
     self:startGame()
     -- 开始倒计时
 
@@ -147,10 +147,7 @@ end
 function MainScene:initCardManager()
     -- 创建倒计时对象，传入圆形图片路径
     self.cardManager = CardManager.new()
-    self.cardManager:setOnComplete(function()
-        print("====cardManager complete!")
-
-    end)
+    
     self.Node_Card:addChild(self.cardManager)
    
 end
