@@ -1,3 +1,4 @@
+local Countdown = require("app.views.Countdown")
 
 local MainScene = class("MainScene", cc.load("mvc").ViewBase)
 
@@ -9,6 +10,11 @@ MainScene.RESOURCE_BINDING = {
     ["Button_1_0"] = {["varname"] = "Button_1_0"},
 
     ["Node_Card"] = {["varname"] = "Node_Card"},
+
+    -- 闹钟
+    ["Node_clock"] = {["varname"] = "Node_clock"},
+    ["Text_Clock"] = {["varname"] = "countdownLabel"},
+    
 
     ["Button_man"]   = {["varname"] = "Button_man"},
     ["Button_tie"] = {["varname"] = "Button_tie"},
@@ -80,13 +86,6 @@ MainScene.RESOURCE_BINDING = {
 function MainScene:onCreate()
     printf("resource node = %s", tostring(self:getResourceNode()))
     print("====MainScene:onCreate","****")
-
-    -- 初始化卡牌位置
-    self:initCardPositions()
-
-    -- 发牌
-    self:dealCards()
-
     -- 初始化分数
     self.targetNodeArr = {}
     self.scores = {}
@@ -172,6 +171,15 @@ function MainScene:onCreate()
     end)
 
 
+    -- 初始化倒计时
+    self:initCountdown()
+    -- 开始倒计时
+
+    -- 初始化卡牌位置
+    -- self:initCardPositions()
+    -- -- 发牌
+    -- self:dealCards()
+
     -- self.check_1:setVisible(false)
     --[[ you can create scene with following comment code instead of using csb file.
     -- add background image
@@ -184,6 +192,21 @@ function MainScene:onCreate()
         :move(display.cx, display.cy + 200)
         :addTo(self)
     ]]
+end
+
+
+--倒计时
+function MainScene:initCountdown()
+    
+    -- 创建倒计时对象，传入圆形图片路径
+    self.countdown = Countdown.new("countdown1.png", self.countdownLabel)
+    self.countdown:setOnComplete(function()
+        print("====Countdown complete!")
+    end)
+    self.Node_clock:addChild(self.countdown)
+
+    -- 开始倒计时
+    self.countdown:start()
 end
 
 -- 更新label
