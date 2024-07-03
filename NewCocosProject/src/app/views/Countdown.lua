@@ -26,7 +26,12 @@ function Countdown:ctor(circleImage, countdownLabel)
 end
 
 function Countdown:start()
+    self.progressTimer:setVisible(true)
+    self.progressTimer:setPercentage(100)
+    self.remainingTime = 12
+    self.countdownLabel:setString(string.format("%ds", math.ceil(self.remainingTime)))
     self.running = true
+
 end
 
 function Countdown:stop()
@@ -55,6 +60,13 @@ end
 function Countdown:updateProgressTimer()
     local percentage = (self.remainingTime / 10) * 100
     self.progressTimer:setPercentage(percentage)
+end
+
+
+function Countdown:reset()
+    self.progressTimer:setVisible(false)
+
+    
 end
 
 function Countdown:setOnComplete(callback)

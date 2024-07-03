@@ -8,13 +8,15 @@ function CardManager:ctor()
     -- self:removeAllCards()
     self.cardBackImage = "little/card_back.png"
     self.cardFrontImages = {
-        "little/card_2_2.png", -- 第一张公共牌正面图片
-        "little/card_2_2.png",
-        "little/card_2_2.png",
-        "little/card_2_2.png",
-        "little/card_2_2.png",
-        "little/card_2_2.png",
-        "little/card_2_2.png"
+        "little/card_1_2.png", -- 第一张公共牌正面图片
+        "little/card_0_2.png",
+        "little/card_3_5.png",
+        "little/card_1_6.png",
+        "little/card_2_13.png",
+        "little/card_2_3.png",
+        "little/card_2_7.png",
+        "little/card_1_11.png",
+        "little/card_1_5.png",
     }
 
     -- 公共牌位置
@@ -135,6 +137,36 @@ function CardManager:unfoldCards(cards, positions, rotations)
     end
 end
 
+function CardManager:resetCard()
+    for i, card in ipairs(self.publicCards) do
+        card:setVisible(false)
+        card:setTexture(self.cardBackImage) -- 翻转到正面图片
+    end
+    for i, card in ipairs(self.leftHandCards) do
+        card:setVisible(false)
+        card:setTexture(self.cardBackImage) -- 翻转到正面图片
+    end
+    for i, card in ipairs(self.rightHandCards) do
+        card:setVisible(false)
+        card:setTexture(self.cardBackImage) -- 翻转到正面图片
+    end
+end
+
+function CardManager:openCard()
+    -- 停止下注，翻开所有公共牌和手牌
+    for i = 2, #self.publicCards do
+        self:flipCard(self.publicCards[i], self.cardFrontImages[i])
+    end
+
+   -- -- 假设手牌也需要翻开，这里也翻开手牌
+   for i, card in ipairs(self.leftHandCards) do
+       self:flipCard(card, self.cardFrontImages[i + 5])  -- 示例，手牌的正面图片
+   end
+   for i, card in ipairs(self.rightHandCards) do
+       self:flipCard(card, self.cardFrontImages[i + 7])  -- 示例，手牌的正面图片
+   end
+
+end
 
 -- 翻牌
 function CardManager:flipCard(card, frontImage)
