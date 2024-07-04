@@ -40,6 +40,7 @@ MainScene.RESOURCE_BINDING = {
     ["targetNode_9"] = {["varname"] = "targetNode_9"},
     ["targetNode_10"] = {["varname"] = "targetNode_10"},
     ["targetNode_11"] = {["varname"] = "targetNode_11"},
+    ["DefualtHead_3"] = {["varname"] = "playerAvatarPosition"},
 
 
     ["Image_me_1"] = {["varname"] = "Image_me_1"},
@@ -189,25 +190,22 @@ function MainScene:stopBetting()
     self.countdown:reset()
     self.cardManager:openCard()
 
-    -- -- 结算输赢（需要实现具体逻辑）
-    -- self:settleGame()
-    local delay = cc.DelayTime:create(4) -- 发牌时间 + 额外延迟
-    local unfoldAction = cc.CallFunc:create(function()
-    -- 清空牌桌，准备下一轮游戏
-        self:resetGame()
+    local delay1 = cc.DelayTime:create(1) -- 发牌时间 + 额外延迟
+    local unfoldAction1 = cc.CallFunc:create(function()
+        -- 结算输赢（需要实现具体逻辑）
+        self:settleGame()
     end)
-    local sequence = cc.Sequence:create(delay, unfoldAction)
+    local delay2 = cc.DelayTime:create(1) -- 发牌时间 + 额外延迟
+    local unfoldAction2 = cc.CallFunc:create(function()
+         -- 结算输赢（需要实现具体逻辑）
+        self:settleGame()
+    end)
+    local sequence = cc.Sequence:create(delay1,unfoldAction1,delay2,unfoldAction2)
     self:runAction(sequence)
 end
 
-function MainScene:resetGame()
-    -- 重新初始化牌堆
-    self.cardManager:resetCard()
-    self:resetScoreLabel()
-    self:resetChips()
 
-  
-end
+
 
 
 function MainScene:setBtnEnabled(enable)
@@ -243,12 +241,70 @@ function MainScene:resetScoreLabel()
     end
 end
 
-function MainScene:resetChips()
+function MainScene:settleScore()
+
+end
+
+
+
+function MainScene:settleGame()
+    self:resetScoreLabel()
+    self:settleScore()
+    self:settleChips()
+    -- 延迟一段时间后重置游戏
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(4.0), cc.CallFunc:create(function()
+        self:resetGame()
+    end)))
+
+end
+
+function MainScene:resetGame()
+    -- 重新初始化牌堆
+    self.cardManager:resetCard()
+    -- self:resetChips()
+
+
+end
+
+function MainScene:settleChips()
+    local winningAreaIndexArr = {3,4,8}
+    -- 判断索引是否在数组中
+    local function isIndexInArray(index, array)
+        for _, value in ipairs(array) do
+            if value == index then
+                return true
+            end
+        end
+        return false
+    end
+
     for i = 1, 11 do
         local targetNode = self.targetNodeArr[i]
-        if targetNode and targetNode.children then
-            for j, chip in ipairs(targetNode.children) do
-                chip:removeFromParent(true)
+        local  x, y = self.playerAvatarPosition:getPosition()
+        local avarPos = self.playerAvatarPosition:getParent():convertToWorldSpace(cc.p(x,y))
+        local localPos = targetNode:convertToNodeSpace(avarPos)
+
+        if targetNode then
+            local chips = targetNode:getChildren()
+            for _, chip in ipairs(chips) do
+                if isIndexInArray(i,winningAreaIndexArr) then
+                    -- 赢的筹码飞向玩家头像
+                    local moveAction = cc.MoveTo:create(0.5, localPos)
+                    local fadeOut = cc.FadeOut:create(0.5)
+                    local removeChip = cc.CallFunc:create(function()
+                        chip:removeFromParent(true)
+                    end)
+                    local sequence = cc.Sequence:create(moveAction, fadeOut, removeChip)
+                    chip:runAction(sequence)
+                else
+                    -- 其他筹码渐隐
+                    local fadeOut = cc.FadeOut:create(0.5)
+                    local removeChip = cc.CallFunc:create(function()
+                        chip:removeFromParent(true)
+                    end)
+                    local sequence = cc.Sequence:create(fadeOut, removeChip)
+                    chip:runAction(sequence)
+                end
             end
         end
     end
