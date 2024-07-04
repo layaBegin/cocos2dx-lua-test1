@@ -144,6 +144,23 @@
           <Image Name="win8.png" />
           <Image Name="win9.png" />
         </Folder>
+        <Folder Name="vs">
+          <Image Name="vs1.png" />
+          <Image Name="vs10.png" />
+          <Image Name="vs11.png" />
+          <Image Name="vs12.png" />
+          <Image Name="vs13.png" />
+          <Image Name="vs14.png" />
+          <Image Name="vs15.png" />
+          <Image Name="vs2.png" />
+          <Image Name="vs3.png" />
+          <Image Name="vs4.png" />
+          <Image Name="vs5.png" />
+          <Image Name="vs6.png" />
+          <Image Name="vs7.png" />
+          <Image Name="vs8.png" />
+          <Image Name="vs9.png" />
+        </Folder>
         <Folder Name="womanAni">
           <Image Name="woman1.png" />
           <Image Name="woman10.png" />

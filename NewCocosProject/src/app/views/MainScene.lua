@@ -108,6 +108,7 @@ MainScene.RESOURCE_BINDING = {
 
     ["winMan"] = {["varname"] = "winMan"},
     ["winWoman"] = {["varname"] = "winWoman"},
+    ["vs13_1"] = {["varname"] = "Image_vs"},
 
 
 }
@@ -162,7 +163,7 @@ function MainScene:onCreate()
 
     self.winMan:setVisible(false)
     self.winWoman:setVisible(false)
-
+    --self.Image_vs:setVisible(false)
     -- 初始化倒计时
     self:initCountdown()
     -- 初始化卡牌管理器
@@ -191,14 +192,33 @@ function MainScene:initCardManager()
 end
 
 function MainScene:startGame()
-    -- 开始下注
-    self:startBetting()
-    ---- 使用定时器无限循环游戏流程
-    --local function updateGame(dt)
-    --
-    --    self:startBetting()
+    --local sprite = self:createFrameAnimation1()
+    --if sprite then
+    --    self:addChild(sprite)
     --end
-    --cc.Director:getInstance():getScheduler():scheduleScriptFunc(updateGame, 20, false)
+    self.Image_vs:setVisible(true)
+
+    -- 创建并添加动画精灵到场景
+    local sprite = self:createFrameAnimation2(function()
+        print("Animation completed")
+        -- 在动画完成后执行回调，比如更换图片
+        --self:changeSpriteImage("res/new_image.png")
+    end)
+    if sprite then
+        self:addChild(sprite)
+    end
+
+    --local delay = cc.DelayTime:create(2)
+    --local action = cc.CallFunc:create(function()
+    --    -- 开始下注
+    --    self:startBetting()
+    --end)
+    --local sequence = cc.Sequence:create(delay,action)
+    --
+    --self:runAction(sequence)
+
+
+
 end
 
 function MainScene:startBetting()
@@ -343,7 +363,7 @@ end
 
 function MainScene:settleGame()
     -- 创建并添加动画精灵到场景
-    self:createFrameAnimation()
+    self:createFrameAnimation(1,14,"womanAni/woman%d.png",self.nvniuzai)
     --if sprite then
     --    self:addChild(sprite)
     --end
@@ -475,13 +495,13 @@ function MainScene:flyChipToButton(key)
     chip:runAction(sequence)
 end
 
-function MainScene:createFrameAnimation()
+function MainScene:createFrameAnimation(startIndex,endIndex,path,sprite,callFuncAction)
     print("======MainScene:createFrameAnimation")
 
     -- 创建动画帧表
     self.frames = {}
-    for i = 1, 14 do
-        local frameName = string.format("womanAni/woman%d.png", i)
+    for i = startIndex, endIndex do
+        local frameName = string.format(path, i)
         local frame = cc.SpriteFrame:create(frameName, cc.rect(0, 0, 900, 688)) --
         if frame then
             table.insert(self.frames, frame)
@@ -494,9 +514,108 @@ function MainScene:createFrameAnimation()
     local animation = cc.Animation:createWithSpriteFrames(self.frames, 0.1) -- 每帧0.1秒
     local animate = cc.Animate:create(animation)
 
+
+    -- 创建回调函数动作
+    local callFuncAction = cc.CallFunc:create(callFuncAction)
+
+    -- 创建动画序列
+    local sequence = cc.Sequence:create(animate, callFuncAction)
+
     -- 创建精灵并运行动画
-    local sprite = self.nvniuzai
+    local sprite = sprite
+    sprite:runAction(sequence)
+
+
+    return sprite
+end
+
+
+function MainScene:createFrameAnimation1()
+    print("======MainScene:createFrameAnimation")
+
+    -- 创建动画帧表
+    local frames = {}
+    for i = 1, 15 do
+        local frameName = string.format("vs/vs%d", i)
+        local frame = cc.SpriteFrame:create(frameName, cc.rect(0, 0, 603, 401)) --
+        if frame then
+            table.insert(frames, frame)
+        else
+            print("Frame not found: " .. frameName)
+        end
+    end
+    --
+    ---- 创建动画对象
+    local animation = cc.Animation:createWithSpriteFrames(frames, 0.1) -- 每帧0.1秒
+    local animate = cc.Animate:create(animation)
+    --
+    ---- 创建回调函数动作
+    --local callFuncAction = cc.CallFunc:create(function()
+    --    self.Image_vs:setVisible(false)
+    --end)
+    --
+    ---- 创建动画序列
+    --local sequence = cc.Sequence:create(animate, callFuncAction)
+    --
+
+
+    -- 创建精灵并运行动画
+    --local sprite = cc.Sprite:createWithSpriteFrame(frames[1])
+    --self:addChild(sprite)
+    --sprite:setPosition(display.cx, display.cy)
+    self.Image_vs:setVisible(true)
+
+    ---- 创建精灵并运行动画
+    local sprite = self.Image_vs
     sprite:runAction(animate)
+
+
+
+end
+
+function MainScene:createFrameAnimation2(onAnimationComplete)
+    -- 创建动画帧表
+    local frames = {}
+    for i = 1, 15 do
+        local frameName = string.format("vs/vs%d.png", i)
+        local texture = cc.Director:getInstance():getTextureCache():addImage(frameName)
+        if texture then
+            local frame = cc.SpriteFrame:createWithTexture(texture, cc.rect(0, 0, texture:getContentSize().width, texture:getContentSize().height))
+            if frame then
+                table.insert(frames, frame)
+                print("Frame loaded: " .. frameName)
+            else
+                print("Failed to create frame for: " .. frameName)
+            end
+        else
+            print("Texture not found: " .. frameName)
+        end
+    end
+
+    -- 确保至少有一个帧被加载
+    if #frames == 0 then
+        print("No frames were loaded.")
+        return nil
+    end
+
+    -- 创建动画对象
+    local animation = cc.Animation:createWithSpriteFrames(frames, 0.1) -- 每帧0.1秒
+    local animate = cc.Animate:create(animation)
+
+    -- 创建精灵并运行动画
+    local sprite = cc.Sprite:createWithSpriteFrame(frames[1])
+    if sprite then
+        sprite:setPosition(display.cx, display.cy)
+
+        -- 创建回调函数动作
+        local callFuncAction = cc.CallFunc:create(onAnimationComplete)
+
+        -- 创建动画序列
+        local sequence = cc.Sequence:create(animate, callFuncAction)
+        sprite:runAction(sequence)
+    else
+        print("Failed to create sprite with the first frame")
+    end
 
     return sprite
 end
