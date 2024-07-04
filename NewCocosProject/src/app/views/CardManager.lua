@@ -90,6 +90,8 @@ function CardManager:dealCards()
     local function moveCardsToStack(cards, positions)
         for i, card in ipairs(cards) do
             card:setVisible(true)
+            card:stopAllActions()
+
             local moveAction = cc.MoveTo:create(moveTime, positions)
             card:runAction(moveAction)
         end

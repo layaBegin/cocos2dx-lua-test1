@@ -111,7 +111,7 @@ function MainScene:onCreate()
     print("====MainScene:onCreate","****")
     -- 初始化分数
     self.areaBtnArr = {}
-    self.targetNodeArr = {}
+    self.targetNodeArr = {}  -- 点击区域
     self.scores = {}
     self.scoreMeImages = {}
     self.scoreAllLabels = {}
@@ -183,12 +183,12 @@ end
 function MainScene:startGame()
     -- 开始下注
     self:startBetting()
-    -- 使用定时器无限循环游戏流程
-    local function updateGame(dt)
-
-        self:startBetting()
-    end
-    cc.Director:getInstance():getScheduler():scheduleScriptFunc(updateGame, 20, false)
+    ---- 使用定时器无限循环游戏流程
+    --local function updateGame(dt)
+    --
+    --    self:startBetting()
+    --end
+    --cc.Director:getInstance():getScheduler():scheduleScriptFunc(updateGame, 20, false)
 end
 
 function MainScene:startBetting()
@@ -209,6 +209,8 @@ function MainScene:startBetting()
         self:setBtnEnabled(true)
     end)
     local sequence = cc.Sequence:create(delay, countDownAction)
+    self:stopAllActions()
+
     self:runAction(sequence)
 
 
@@ -271,16 +273,52 @@ function MainScene:resetScoreLabel()
     end
 end
 
+-- 创建并显示 "WIN" 动画
+function MainScene:showWinAnimation(key)
+    local winSprite = cc.Sprite:create("win.png")
+    self:addChild(winSprite)
+    local x,y = self.targetNodeArr[key]:getPosition()
+    local worldPos = self.targetNodeArr[key]:getParent():convertToWorldSpace(cc.p(x,y))
+    winSprite:setPosition(worldPos)
+
+    -- 创建缩放和渐隐动画
+    local scaleUp = cc.EaseOut:create(cc.ScaleTo:create(0.3, 1.5), 0.5)
+    local fadeOut = cc.ScaleTo:create(0.1,1)
+    local delay = cc.DelayTime:create(2)
+    local removeWinSprite = cc.CallFunc:create(function()
+        winSprite:removeFromParent(true)
+    end)
+    local sequence = cc.Sequence:create(scaleUp, fadeOut,delay, removeWinSprite)
+
+    -- 运行动画
+    winSprite:runAction(sequence)
+end
+
+
 --结算分数
 function MainScene:settleScore()
-
+    local winningAreaIndexArr = {3,4,8}
+    -- 判断索引是否在数组中
+    local function isIndexInArray(index, array)
+        for _, value in ipairs(array) do
+            if value == index then
+                return true
+            end
+        end
+        return false
+    end
     for i, v in pairs(self.scores) do
         self.scoreSettleImages[i] = self["Image_settle_" .. i]
         self.scoreSettleImages[i]:setVisible(true)
 
         self.scoreSettleLabels[i] = self["Text_settle_" .. i]
         self.scoreSettleLabels[i]:setString(v)
+        if isIndexInArray(i,winningAreaIndexArr) then
+            self:showWinAnimation(i)
+        end
     end
+
+
 
 end
 
@@ -293,6 +331,7 @@ function MainScene:settleGame()
     -- 延迟一段时间后重置游戏
     self:runAction(cc.Sequence:create(cc.DelayTime:create(4.0), cc.CallFunc:create(function()
         self:resetGame()
+        self:startGame()
     end)))
 
 end
