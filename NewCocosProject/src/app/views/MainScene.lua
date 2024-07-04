@@ -14,7 +14,7 @@ MainScene.RESOURCE_BINDING = {
 
     -- 闹钟
     ["Node_clock"] = {["varname"] = "Node_clock"},
-    -- ["Text_Clock"] = {["varname"] = "countdownLabel"},
+    ["nvniuzai_4"] = {["varname"] = "nvniuzai"},
     
 
     ["Button_man"]   = {["varname"] = "areaButton_1"},
@@ -133,7 +133,6 @@ function MainScene:onCreate()
         self.scoreMeImages[i] = self["Image_me_" .. i]
         self.scoreMeImages[i]:setVisible(false)
     end
-
 
     for i = 1, 11 do
         self.scoreAllLabels[i] = self["Text_all_" .. i]
@@ -325,6 +324,11 @@ end
 
 
 function MainScene:settleGame()
+    -- 创建并添加动画精灵到场景
+    self:createFrameAnimation()
+    --if sprite then
+    --    self:addChild(sprite)
+    --end
     self:resetScoreLabel()
     self:settleScore()
     self:settleChips()
@@ -450,6 +454,34 @@ function MainScene:flyChipToButton(key)
     -- 运行动作
     chip:runAction(sequence)
 end
+
+function MainScene:createFrameAnimation()
+    print("======MainScene:createFrameAnimation")
+
+    -- 创建动画帧表
+    self.frames = {}
+    for i = 1, 14 do
+        local frameName = string.format("womanAni/woman%d.png", i)
+        local frame = cc.SpriteFrame:create(frameName, cc.rect(0, 0, 900, 688)) --
+        if frame then
+            table.insert(self.frames, frame)
+        else
+            print("Frame not found: " .. frameName)
+        end
+    end
+
+    -- 创建动画对象
+    local animation = cc.Animation:createWithSpriteFrames(self.frames, 0.1) -- 每帧0.1秒
+    local animate = cc.Animate:create(animation)
+
+    -- 创建精灵并运行动画
+    local sprite = self.nvniuzai
+    sprite:runAction(animate)
+
+    return sprite
+end
+
+
 
 
 return MainScene
