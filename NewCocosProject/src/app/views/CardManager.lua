@@ -8,15 +8,15 @@ function CardManager:ctor()
     -- self:removeAllCards()
     self.cardBackImage = "little/card_back.png"
     self.cardFrontImages = {
-        "little/card_1_2.png", -- 第一张公共牌正面图片
-        "little/card_0_2.png",
-        "little/card_3_5.png",
-        "little/card_1_6.png",
-        "little/card_2_13.png",
+        "little/card_2_12.png", -- 第一张公共牌正面图片
+        "little/card_0_3.png",
         "little/card_2_3.png",
-        "little/card_2_7.png",
+        "little/card_0_1.png",
+        "little/card_3_10.png",
+        "little/card_1_12.png",
+        "little/card_1_7.png",
+        "little/card_3_13.png",
         "little/card_1_11.png",
-        "little/card_1_5.png",
     }
 
     -- 公共牌位置

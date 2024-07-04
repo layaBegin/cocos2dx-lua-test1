@@ -103,6 +103,13 @@ MainScene.RESOURCE_BINDING = {
     ["Text_settle_10"] = {["varname"] = "Text_settle_10"},
     ["Text_settle_11"] = {["varname"] = "Text_settle_11"},
 
+    ["Text_myScore"] = {["varname"] = "Text_myScore"},
+    ["Text_myScore"] = {["varname"] = "Text_myScore"},
+
+    ["winMan"] = {["varname"] = "winMan"},
+    ["winWoman"] = {["varname"] = "winWoman"},
+
+
 }
 
 
@@ -113,6 +120,7 @@ function MainScene:onCreate()
     self.areaBtnArr = {}
     self.targetNodeArr = {}  -- 点击区域
     self.scores = {}
+    self.myScore = 1000
     self.scoreMeImages = {}
     self.scoreAllLabels = {}
     self.scoreMeLabels = {}
@@ -151,6 +159,9 @@ function MainScene:onCreate()
         self.scoreSettleLabels[i] = self["Text_settle_" .. i]
         self.scoreSettleLabels[i]:setString("")
     end
+
+    self.winMan:setVisible(false)
+    self.winWoman:setVisible(false)
 
     -- 初始化倒计时
     self:initCountdown()
@@ -296,6 +307,10 @@ end
 
 --结算分数
 function MainScene:settleScore()
+    self.winMan:setVisible(true)
+    self.winWoman:setVisible(true)
+    self.winMan:setTexture("pokertype/lose3.png")
+    self.winWoman:setTexture("pokertype/win5.png")
     local winningAreaIndexArr = {3,4,8}
     -- 判断索引是否在数组中
     local function isIndexInArray(index, array)
@@ -313,10 +328,13 @@ function MainScene:settleScore()
         self.scoreSettleLabels[i] = self["Text_settle_" .. i]
         self.scoreSettleLabels[i]:setString(v)
         if isIndexInArray(i,winningAreaIndexArr) then
+            self.myScore = self.myScore + v
             self:showWinAnimation(i)
+        else
+            self.myScore = self.myScore - v
         end
     end
-
+    self.Text_myScore:setString(self.myScore)
 
 
 end
@@ -341,6 +359,8 @@ function MainScene:settleGame()
 end
 
 function MainScene:resetGame()
+    self.winMan:setVisible(false)
+    self.winWoman:setVisible(false)
     -- 重新初始化牌堆
     self.cardManager:resetCard()
 
