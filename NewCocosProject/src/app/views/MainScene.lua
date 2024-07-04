@@ -79,6 +79,30 @@ MainScene.RESOURCE_BINDING = {
     ["Text_me_10"] = {["varname"] = "Text_me_10"},
     ["Text_me_11"] = {["varname"] = "Text_me_11"},
 
+    ["Image_settle_1"] = {["varname"] = "Image_settle_1"},
+    ["Image_settle_2"] = {["varname"] = "Image_settle_2"},
+    ["Image_settle_3"] = {["varname"] = "Image_settle_3"},
+    ["Image_settle_4"] = {["varname"] = "Image_settle_4"},
+    ["Image_settle_5"] = {["varname"] = "Image_settle_5"},
+    ["Image_settle_6"] = {["varname"] = "Image_settle_6"},
+    ["Image_settle_7"] = {["varname"] = "Image_settle_7"},
+    ["Image_settle_8"] = {["varname"] = "Image_settle_8"},
+    ["Image_settle_9"] = {["varname"] = "Image_settle_9"},
+    ["Image_settle_10"] = {["varname"] = "Image_settle_10"},
+    ["Image_settle_11"] = {["varname"] = "Image_settle_11"},
+
+    ["Text_settle_1"] = {["varname"] = "Text_settle_1"},
+    ["Text_settle_2"] = {["varname"] = "Text_settle_2"},
+    ["Text_settle_3"] = {["varname"] = "Text_settle_3"},
+    ["Text_settle_4"] = {["varname"] = "Text_settle_4"},
+    ["Text_settle_5"] = {["varname"] = "Text_settle_5"},
+    ["Text_settle_6"] = {["varname"] = "Text_settle_6"},
+    ["Text_settle_7"] = {["varname"] = "Text_settle_7"},
+    ["Text_settle_8"] = {["varname"] = "Text_settle_8"},
+    ["Text_settle_9"] = {["varname"] = "Text_settle_9"},
+    ["Text_settle_10"] = {["varname"] = "Text_settle_10"},
+    ["Text_settle_11"] = {["varname"] = "Text_settle_11"},
+
 }
 
 
@@ -92,6 +116,8 @@ function MainScene:onCreate()
     self.scoreMeImages = {}
     self.scoreAllLabels = {}
     self.scoreMeLabels = {}
+    self.scoreSettleImages = {}
+    self.scoreSettleLabels = {}
 
     for i = 1, 11 do
         self.areaBtnArr[i] = self["areaButton_" .. i]
@@ -108,9 +134,6 @@ function MainScene:onCreate()
         self.scoreMeImages[i]:setVisible(false)
     end
 
-    for i = 1, 11 do
-        self.scores[i] = 0
-    end
 
     for i = 1, 11 do
         self.scoreAllLabels[i] = self["Text_all_" .. i]
@@ -120,6 +143,14 @@ function MainScene:onCreate()
     for i = 1, 11 do
         self.scoreMeLabels[i] = self["Text_me_" .. i]
         self.scoreMeLabels[i]:setString("")
+    end
+
+    for i = 1, 11 do
+        self.scoreSettleImages[i] = self["Image_settle_" .. i]
+        self.scoreSettleImages[i]:setVisible(false)
+
+        self.scoreSettleLabels[i] = self["Text_settle_" .. i]
+        self.scoreSettleLabels[i]:setString("")
     end
 
     -- 初始化倒计时
@@ -154,16 +185,14 @@ function MainScene:startGame()
     self:startBetting()
     -- 使用定时器无限循环游戏流程
     local function updateGame(dt)
-        -- self:stopBetting()
-        -- self:resetGame()
+
         self:startBetting()
     end
     cc.Director:getInstance():getScheduler():scheduleScriptFunc(updateGame, 20, false)
 end
 
 function MainScene:startBetting()
-    -- -- 初始化卡牌位置
-    -- self:initCardPositions()
+
     -- 发牌并翻开第一张公共牌
     self.cardManager:dealCards()
 
@@ -176,11 +205,13 @@ function MainScene:startBetting()
         end)
         -- 启用倒计时
         self.countdown:start()
+        -- 激活区域按钮
+        self:setBtnEnabled(true)
     end)
     local sequence = cc.Sequence:create(delay, countDownAction)
     self:runAction(sequence)
-    -- 激活区域按钮
-    self:setBtnEnabled(true)
+
+
 end
 
 
@@ -236,12 +267,20 @@ function MainScene:resetScoreLabel()
 
     for i = 1, 11 do
         self.scoreMeImages[i]:setVisible(false)
-
         self.scoreMeLabels[i]:setString("")
     end
 end
 
+--结算分数
 function MainScene:settleScore()
+
+    for i, v in pairs(self.scores) do
+        self.scoreSettleImages[i] = self["Image_settle_" .. i]
+        self.scoreSettleImages[i]:setVisible(true)
+
+        self.scoreSettleLabels[i] = self["Text_settle_" .. i]
+        self.scoreSettleLabels[i]:setString(v)
+    end
 
 end
 
@@ -261,8 +300,15 @@ end
 function MainScene:resetGame()
     -- 重新初始化牌堆
     self.cardManager:resetCard()
-    -- self:resetChips()
 
+    self.scores = {}
+    for i = 1, 11 do
+        self.scoreSettleImages[i] = self["Image_settle_" .. i]
+        self.scoreSettleImages[i]:setVisible(false)
+
+        self.scoreSettleLabels[i] = self["Text_settle_" .. i]
+        self.scoreSettleLabels[i]:setString("")
+    end
 
 end
 
@@ -313,8 +359,14 @@ end
 
 -- 飞筹码
 function MainScene:flyChipToButton(key)
+
     local targetNode = self.targetNodeArr[key]
-    self.scores[key] = self.scores[key] + 1
+    if self.scores[key] then
+        self.scores[key] = self.scores[key] + 1
+    else
+        self.scores[key] = 1
+
+    end
     self:updateScoreLabel(key)
     -- 创建筹码精灵
     local chip = cc.Sprite:create("chip1.png")

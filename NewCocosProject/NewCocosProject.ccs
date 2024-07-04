@@ -139,6 +139,7 @@
         </Folder>
         <Image Name="bg_green.png" />
         <Image Name="bg6.png" />
+        <Image Name="bg9.png" />
         <Image Name="btn_buyin_normal.png" />
         <Image Name="btn_joingame_normal.png" />
         <Image Name="chip1.png" />
