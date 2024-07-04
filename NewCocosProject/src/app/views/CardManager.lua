@@ -87,9 +87,9 @@ end
 function CardManager:dealCards()
     -- 先将所有牌发到同一个位置
     local moveTime = 0.2
-
     local function moveCardsToStack(cards, positions)
         for i, card in ipairs(cards) do
+            card:setVisible(true)
             local moveAction = cc.MoveTo:create(moveTime, positions)
             card:runAction(moveAction)
         end
@@ -141,14 +141,20 @@ function CardManager:resetCard()
     for i, card in ipairs(self.publicCards) do
         card:setVisible(false)
         card:setTexture(self.cardBackImage) -- 翻转到正面图片
+        card:setPosition(0, 300) -- 牌堆位置
+
     end
     for i, card in ipairs(self.leftHandCards) do
         card:setVisible(false)
         card:setTexture(self.cardBackImage) -- 翻转到正面图片
+        card:setPosition(0, 300) -- 牌堆位置
+
     end
     for i, card in ipairs(self.rightHandCards) do
         card:setVisible(false)
         card:setTexture(self.cardBackImage) -- 翻转到正面图片
+        card:setPosition(0, 300) -- 牌堆位置
+
     end
 end
 

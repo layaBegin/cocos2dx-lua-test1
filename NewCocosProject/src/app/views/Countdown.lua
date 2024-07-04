@@ -2,13 +2,16 @@ local Countdown = class("Countdown", function()
     return cc.Node:create()
 end)
 
-function Countdown:ctor(circleImage, countdownLabel)
-    self.remainingTime = 12
+function Countdown:ctor(circleImage,tdf)
 
+    self.remainingTime = 12
+    local circleSpriteBg = cc.Sprite:create("countdown.png")
+    self:addChild(circleSpriteBg)
+    
     -- 创建倒计时标签
-    -- self.countdownLabel = cc.Label:createWithSystemFont(string.format("%ds", duration), "Arial", fontSize or 36)
-    self.countdownLabel = countdownLabel
-    -- self:addChild(self.countdownLabel)
+    self.countdownLabel = cc.Label:createWithSystemFont(string.format("%ds", "12"), "Arial", 72)
+    -- self.countdownLabel = countdownLabel
+    self:addChild(self.countdownLabel)
 
     -- 创建倒计时圈
     local circleSprite = cc.Sprite:create(circleImage)
@@ -26,7 +29,7 @@ function Countdown:ctor(circleImage, countdownLabel)
 end
 
 function Countdown:start()
-    self.progressTimer:setVisible(true)
+    self:setVisible(true)
     self.progressTimer:setPercentage(100)
     self.remainingTime = 12
     self.countdownLabel:setString(string.format("%ds", math.ceil(self.remainingTime)))
@@ -64,7 +67,8 @@ end
 
 
 function Countdown:reset()
-    self.progressTimer:setVisible(false)
+
+    self:setVisible(false)
 
     
 end
