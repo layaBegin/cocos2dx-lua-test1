@@ -108,8 +108,8 @@ MainScene.RESOURCE_BINDING = {
 
     ["winMan"] = {["varname"] = "winMan"},
     ["winWoman"] = {["varname"] = "winWoman"},
-    ["vs13_1"] = {["varname"] = "Image_vs"},
-    ["startAni"] = {["varname"] = "startAni"},
+    --["vsNode"] = {["varname"] = "Image_vs"},
+    --["startAni"] = {["varname"] = "startAni"},
 
 
 }
@@ -164,7 +164,6 @@ function MainScene:onCreate()
 
     self.winMan:setVisible(false)
     self.winWoman:setVisible(false)
-    --self.Image_vs:setVisible(false)
     -- 初始化倒计时
     self:initCountdown()
     -- 初始化卡牌管理器
@@ -197,19 +196,11 @@ function MainScene:startGame()
     --if sprite then
     --    self:addChild(sprite)
     --end
-    self.Image_vs:setVisible(true)
 
     ---- 创建并添加动画精灵到场景
-    self:createFrameAnimationCommon(15,"vs/vs%d.png",self.Image_vs,function()
-        print("====Animation completed")
-        -- 在动画完成后执行回调，比如更换图片
-        self.Image_vs:setVisible(false)
-        self.startAni:setVisible(false)
-    end)
+    self:createFrameAnimation1(15,"vs/vs%d.png",cc.p(display.cx, display.cy + 600))
 
-    self:createFrameAnimationCommon(9,"startAni/start_%d.png",self.startAni,function()
-
-    end)
+    self:createFrameAnimation1(9,"startAni/start_%d.png",cc.p(display.cx, display.cy + 300))
 
     local delay = cc.DelayTime:create(2)
     local action = cc.CallFunc:create(function()
@@ -254,7 +245,7 @@ function MainScene:stopBetting()
     print("===进入停止下注")
     self:setBtnEnabled(false)
     self.countdown:reset()
-    self:createFrameAnimation1(7,"stopAni/stop_%d.png",self)
+    self:createFrameAnimation1(7,"stopAni/stop_%d.png",cc.p(display.cx, display.cy))
     self.cardManager:openCard()
 
     local delay1 = cc.DelayTime:create(1) -- 发牌时间 + 额外延迟
@@ -534,7 +525,7 @@ function MainScene:createFrameAnimation(startIndex,endIndex,path,sprite,callFunc
 end
 
 
-function MainScene:createFrameAnimation1(endIndex,path,parent)
+function MainScene:createFrameAnimation1(endIndex,path,pos)
     print("======MainScene:createFrameAnimation")
 
     -- 创建动画帧表
@@ -571,8 +562,8 @@ function MainScene:createFrameAnimation1(endIndex,path,parent)
     ---- 创建动画序列
     local sequence = cc.Sequence:create(animate, callFuncAction)
     --
-    parent:addChild(sprite)
-    sprite:setPosition(display.cx, display.cy)
+    self:addChild(sprite)
+    sprite:setPosition(pos)
     ---- 创建精灵并运行动画
     sprite:runAction(sequence)
 
