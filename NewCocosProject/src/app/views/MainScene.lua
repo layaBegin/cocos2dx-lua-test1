@@ -168,10 +168,29 @@ function MainScene:onCreate()
     self:initCountdown()
     -- 初始化卡牌管理器
     self:initCardManager()
+    self:setBtnEnabled(false)
+    -- 获取当前的调度器
+    local scheduler = cc.Director:getInstance():getScheduler()
+    -- 定义一个定时器句柄变量
+    local timerHandle
 
-    self:startGame()
+    -- 定义一个函数，在延迟后调用
+    local function onTimer()
+        print("======Timer triggered")
+        self:startGame()
+        -- 取消定时器
+        if timerHandle then
+            scheduler:unscheduleScriptEntry(timerHandle)
+            timerHandle = nil
+        end
+    end
+    -- 创建一个定时器，延迟1秒后调用一次onTimer函数
+    timerHandle = scheduler:scheduleScriptFunc(onTimer, 20, false)
+
 
 end
+
+
 
 --倒计时
 function MainScene:initCountdown()
@@ -179,7 +198,7 @@ function MainScene:initCountdown()
     self.countdown = Countdown.new("countdown1.png", self.countdownLabel)
    
     self.Node_clock:addChild(self.countdown)
-
+    self.countdown:setVisible(false)
 end
 
 --倒计时
@@ -198,15 +217,23 @@ function MainScene:startGame()
     --end
 
     ---- 创建并添加动画精灵到场景
-    self:createFrameAnimation1(15,"vs/vs%d.png",cc.p(display.cx, display.cy + 600))
+    local spriteVs
+    local spriteStart
+    spriteVs =  self:createFrameAnimationCommon(15,"vs/vs%d.png",cc.p(display.cx, display.cy + 600),function()
+        spriteVs:removeFromParent()
+        spriteStart:removeFromParent()
+    end)
 
-    self:createFrameAnimation1(9,"startAni/start_%d.png",cc.p(display.cx, display.cy + 300))
+     spriteStart =  self:createFrameAnimationCommon(9,"startAni/start_%d.png",cc.p(display.cx, display.cy + 300),function()
+
+    end)
 
     local delay = cc.DelayTime:create(2)
     local action = cc.CallFunc:create(function()
         -- 开始下注
         self:startBetting()
     end)
+
     local sequence = cc.Sequence:create(delay,action)
 
     self:runAction(sequence)
@@ -220,7 +247,7 @@ function MainScene:startBetting()
     -- 发牌并翻开第一张公共牌
     self.cardManager:dealCards()
 
-    local delay = cc.DelayTime:create(3) -- 
+    local delay = cc.DelayTime:create(2) --
     local countDownAction = cc.CallFunc:create(function()
         self.countdown:setOnComplete(function()
             print("====Countdown complete!")
@@ -520,7 +547,6 @@ function MainScene:createFrameAnimation(startIndex,endIndex,path,sprite,callFunc
     local sprite = sprite
     sprite:runAction(sequence)
 
-
     return sprite
 end
 
@@ -556,7 +582,8 @@ function MainScene:createFrameAnimation1(endIndex,path,pos)
     local sprite = cc.Sprite:createWithSpriteFrame(frames[1])
     -- 创建回调函数动作
     local callFuncAction = cc.CallFunc:create(function()
-        sprite:removeFromParent()
+
+          sprite:removeFromParent()
     end)
 
     ---- 创建动画序列
@@ -570,7 +597,7 @@ function MainScene:createFrameAnimation1(endIndex,path,pos)
 end
 
 
-function MainScene:createFrameAnimationCommon(endIndex,path,sprite,onAnimationComplete)
+function MainScene:createFrameAnimationCommon(endIndex,path,pos,onAnimationComplete)
     -- 创建动画帧表
     local frames = {}
     for i = 1, endIndex do
@@ -600,7 +627,9 @@ function MainScene:createFrameAnimationCommon(endIndex,path,sprite,onAnimationCo
     local animate = cc.Animate:create(animation)
 
     -- 创建精灵并运行动画
-    --local sprite = cc.Sprite:createWithSpriteFrame(frames[1])
+    local sprite = cc.Sprite:createWithSpriteFrame(frames[1])
+    self:addChild(sprite)
+    sprite:setPosition(pos)
     sprite:setVisible(true)
     ---- 创建精灵并运行动画
     sprite:stopAllActions()
@@ -609,6 +638,8 @@ function MainScene:createFrameAnimationCommon(endIndex,path,sprite,onAnimationCo
     -- 创建动画序列
     local sequence = cc.Sequence:create(animate, callFuncAction)
     sprite:runAction(sequence)
+
+    return sprite
 
 end
 

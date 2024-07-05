@@ -50,6 +50,8 @@ function CardManager:ctor()
         if card then
             card:setPosition(0, 300) -- 牌堆位置
             self:addChild(card)
+            card:setVisible(false)
+
             table.insert(self.publicCards, card)
         else
             print("Failed to create public card " .. i)
@@ -62,6 +64,7 @@ function CardManager:ctor()
         if card then
             card:setPosition(0, 300) -- 牌堆位置
             self:addChild(card)
+            card:setVisible(false)
             table.insert(self.leftHandCards, card)
         else
             print("Failed to create left hand card " .. i)
@@ -74,6 +77,7 @@ function CardManager:ctor()
         if card then
             self:addChild(card)
             card:setPosition(0, 300) -- 牌堆位置
+            card:setVisible(false)
             table.insert(self.rightHandCards, card)
         else
             print("Failed to create right hand card " .. i)
