@@ -155,6 +155,15 @@
           <Image Name="start_8.png" />
           <Image Name="start_9.png" />
         </Folder>
+        <Folder Name="stopAni">
+          <Image Name="stop_1.png" />
+          <Image Name="stop_2.png" />
+          <Image Name="stop_3.png" />
+          <Image Name="stop_4.png" />
+          <Image Name="stop_5.png" />
+          <Image Name="stop_6.png" />
+          <Image Name="stop_7.png" />
+        </Folder>
         <Folder Name="vs">
           <Image Name="vs1.png" />
           <Image Name="vs10.png" />

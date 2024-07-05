@@ -200,7 +200,7 @@ function MainScene:startGame()
     self.Image_vs:setVisible(true)
 
     ---- 创建并添加动画精灵到场景
-    self:createFrameAnimation2(function()
+    self:createFrameAnimationCommon(15,"vs/vs%d.png",self.Image_vs,function()
         print("====Animation completed")
         -- 在动画完成后执行回调，比如更换图片
         self.Image_vs:setVisible(false)
@@ -254,6 +254,7 @@ function MainScene:stopBetting()
     print("===进入停止下注")
     self:setBtnEnabled(false)
     self.countdown:reset()
+    self:createFrameAnimation1(7,"stopAni/stop_%d.png",self)
     self.cardManager:openCard()
 
     local delay1 = cc.DelayTime:create(1) -- 发牌时间 + 额外延迟
@@ -533,53 +534,13 @@ function MainScene:createFrameAnimation(startIndex,endIndex,path,sprite,callFunc
 end
 
 
-function MainScene:createFrameAnimation1()
+function MainScene:createFrameAnimation1(endIndex,path,parent)
     print("======MainScene:createFrameAnimation")
 
     -- 创建动画帧表
     local frames = {}
-    for i = 1, 15 do
-        local frameName = string.format("vs/vs%d", i)
-        local frame = cc.SpriteFrame:create(frameName, cc.rect(0, 0, 603, 401)) --
-        if frame then
-            table.insert(frames, frame)
-        else
-            print("Frame not found: " .. frameName)
-        end
-    end
-    --
-    ---- 创建动画对象
-    local animation = cc.Animation:createWithSpriteFrames(frames, 0.1) -- 每帧0.1秒
-    local animate = cc.Animate:create(animation)
-    --
-    ---- 创建回调函数动作
-    --local callFuncAction = cc.CallFunc:create(function()
-    --    self.Image_vs:setVisible(false)
-    --end)
-    --
-    ---- 创建动画序列
-    --local sequence = cc.Sequence:create(animate, callFuncAction)
-    --
-
-
-    -- 创建精灵并运行动画
-    --local sprite = cc.Sprite:createWithSpriteFrame(frames[1])
-    --self:addChild(sprite)
-    --sprite:setPosition(display.cx, display.cy)
-    self.Image_vs:setVisible(true)
-
-    ---- 创建精灵并运行动画
-    local sprite = self.Image_vs
-    sprite:runAction(animate)
-
-end
-
---vs动画
-function MainScene:createFrameAnimation2(onAnimationComplete)
-    -- 创建动画帧表
-    local frames = {}
-    for i = 1, 15 do
-        local frameName = string.format("vs/vs%d.png", i)
+    for i = 1, endIndex do
+        local frameName = string.format(path, i)
         local texture = cc.Director:getInstance():getTextureCache():addImage(frameName)
         if texture then
             local frame = cc.SpriteFrame:createWithTexture(texture, cc.rect(0, 0, texture:getContentSize().width, texture:getContentSize().height))
@@ -592,32 +553,31 @@ function MainScene:createFrameAnimation2(onAnimationComplete)
         else
             print("Texture not found: " .. frameName)
         end
-    end
 
-    -- 确保至少有一个帧被加载
-    if #frames == 0 then
-        print("No frames were loaded.")
-        return nil
     end
-
-    -- 创建动画对象
+    --
+    ---- 创建动画对象
     local animation = cc.Animation:createWithSpriteFrames(frames, 0.1) -- 每帧0.1秒
     local animate = cc.Animate:create(animation)
+    --
 
     -- 创建精灵并运行动画
-    --local sprite = cc.Sprite:createWithSpriteFrame(frames[1])
-    self.Image_vs:setVisible(true)
-    ---- 创建精灵并运行动画
-    local sprite = self.Image_vs
-    sprite:stopAllActions()
+    local sprite = cc.Sprite:createWithSpriteFrame(frames[1])
     -- 创建回调函数动作
-    local callFuncAction = cc.CallFunc:create(onAnimationComplete)
-    -- 创建动画序列
+    local callFuncAction = cc.CallFunc:create(function()
+        sprite:removeFromParent()
+    end)
+
+    ---- 创建动画序列
     local sequence = cc.Sequence:create(animate, callFuncAction)
+    --
+    parent:addChild(sprite)
+    sprite:setPosition(display.cx, display.cy)
+    ---- 创建精灵并运行动画
     sprite:runAction(sequence)
 
-    --return sprite
 end
+
 
 function MainScene:createFrameAnimationCommon(endIndex,path,sprite,onAnimationComplete)
     -- 创建动画帧表
