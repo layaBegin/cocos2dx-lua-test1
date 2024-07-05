@@ -109,6 +109,7 @@ MainScene.RESOURCE_BINDING = {
     ["winMan"] = {["varname"] = "winMan"},
     ["winWoman"] = {["varname"] = "winWoman"},
     ["vs13_1"] = {["varname"] = "Image_vs"},
+    ["startAni"] = {["varname"] = "startAni"},
 
 
 }
@@ -198,24 +199,26 @@ function MainScene:startGame()
     --end
     self.Image_vs:setVisible(true)
 
-    -- 创建并添加动画精灵到场景
-    local sprite = self:createFrameAnimation2(function()
-        print("Animation completed")
+    ---- 创建并添加动画精灵到场景
+    self:createFrameAnimation2(function()
+        print("====Animation completed")
         -- 在动画完成后执行回调，比如更换图片
-        --self:changeSpriteImage("res/new_image.png")
+        self.Image_vs:setVisible(false)
+        self.startAni:setVisible(false)
     end)
-    if sprite then
-        self:addChild(sprite)
-    end
 
-    --local delay = cc.DelayTime:create(2)
-    --local action = cc.CallFunc:create(function()
-    --    -- 开始下注
-    --    self:startBetting()
-    --end)
-    --local sequence = cc.Sequence:create(delay,action)
-    --
-    --self:runAction(sequence)
+    self:createFrameAnimationCommon(9,"startAni/start_%d.png",self.startAni,function()
+
+    end)
+
+    local delay = cc.DelayTime:create(2)
+    local action = cc.CallFunc:create(function()
+        -- 开始下注
+        self:startBetting()
+    end)
+    local sequence = cc.Sequence:create(delay,action)
+
+    self:runAction(sequence)
 
 
 
@@ -569,10 +572,9 @@ function MainScene:createFrameAnimation1()
     local sprite = self.Image_vs
     sprite:runAction(animate)
 
-
-
 end
 
+--vs动画
 function MainScene:createFrameAnimation2(onAnimationComplete)
     -- 创建动画帧表
     local frames = {}
@@ -603,21 +605,60 @@ function MainScene:createFrameAnimation2(onAnimationComplete)
     local animate = cc.Animate:create(animation)
 
     -- 创建精灵并运行动画
-    local sprite = cc.Sprite:createWithSpriteFrame(frames[1])
-    if sprite then
-        sprite:setPosition(display.cx, display.cy)
+    --local sprite = cc.Sprite:createWithSpriteFrame(frames[1])
+    self.Image_vs:setVisible(true)
+    ---- 创建精灵并运行动画
+    local sprite = self.Image_vs
+    sprite:stopAllActions()
+    -- 创建回调函数动作
+    local callFuncAction = cc.CallFunc:create(onAnimationComplete)
+    -- 创建动画序列
+    local sequence = cc.Sequence:create(animate, callFuncAction)
+    sprite:runAction(sequence)
 
-        -- 创建回调函数动作
-        local callFuncAction = cc.CallFunc:create(onAnimationComplete)
+    --return sprite
+end
 
-        -- 创建动画序列
-        local sequence = cc.Sequence:create(animate, callFuncAction)
-        sprite:runAction(sequence)
-    else
-        print("Failed to create sprite with the first frame")
+function MainScene:createFrameAnimationCommon(endIndex,path,sprite,onAnimationComplete)
+    -- 创建动画帧表
+    local frames = {}
+    for i = 1, endIndex do
+        local frameName = string.format(path, i)
+        local texture = cc.Director:getInstance():getTextureCache():addImage(frameName)
+        if texture then
+            local frame = cc.SpriteFrame:createWithTexture(texture, cc.rect(0, 0, texture:getContentSize().width, texture:getContentSize().height))
+            if frame then
+                table.insert(frames, frame)
+                print("Frame loaded: " .. frameName)
+            else
+                print("Failed to create frame for: " .. frameName)
+            end
+        else
+            print("Texture not found: " .. frameName)
+        end
     end
 
-    return sprite
+    -- 确保至少有一个帧被加载
+    if #frames == 0 then
+        print("No frames were loaded.")
+        return nil
+    end
+
+    -- 创建动画对象
+    local animation = cc.Animation:createWithSpriteFrames(frames, 0.1) -- 每帧0.1秒
+    local animate = cc.Animate:create(animation)
+
+    -- 创建精灵并运行动画
+    --local sprite = cc.Sprite:createWithSpriteFrame(frames[1])
+    sprite:setVisible(true)
+    ---- 创建精灵并运行动画
+    sprite:stopAllActions()
+    -- 创建回调函数动作
+    local callFuncAction = cc.CallFunc:create(onAnimationComplete)
+    -- 创建动画序列
+    local sequence = cc.Sequence:create(animate, callFuncAction)
+    sprite:runAction(sequence)
+
 end
 
 

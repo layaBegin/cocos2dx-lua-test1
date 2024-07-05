@@ -144,6 +144,17 @@
           <Image Name="win8.png" />
           <Image Name="win9.png" />
         </Folder>
+        <Folder Name="startAni">
+          <Image Name="start_1.png" />
+          <Image Name="start_2.png" />
+          <Image Name="start_3.png" />
+          <Image Name="start_4.png" />
+          <Image Name="start_5.png" />
+          <Image Name="start_6.png" />
+          <Image Name="start_7.png" />
+          <Image Name="start_8.png" />
+          <Image Name="start_9.png" />
+        </Folder>
         <Folder Name="vs">
           <Image Name="vs1.png" />
           <Image Name="vs10.png" />
