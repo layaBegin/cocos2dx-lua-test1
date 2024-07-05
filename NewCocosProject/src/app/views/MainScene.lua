@@ -185,7 +185,7 @@ function MainScene:onCreate()
         end
     end
     -- 创建一个定时器，延迟1秒后调用一次onTimer函数
-    timerHandle = scheduler:scheduleScriptFunc(onTimer, 20, false)
+    timerHandle = scheduler:scheduleScriptFunc(onTimer, 5, false)
 
 
 end
@@ -220,6 +220,7 @@ function MainScene:startGame()
     local spriteVs
     local spriteStart
     spriteVs =  self:createFrameAnimationCommon(15,"vs/vs%d.png",cc.p(display.cx, display.cy + 600),function()
+        print("===进入spriteVs,回调")
         spriteVs:removeFromParent()
         spriteStart:removeFromParent()
     end)
@@ -280,11 +281,11 @@ function MainScene:stopBetting()
         -- 结算输赢（需要实现具体逻辑）
         self:settleGame()
     end)
-    local delay2 = cc.DelayTime:create(1) -- 发牌时间 + 额外延迟
-    local unfoldAction2 = cc.CallFunc:create(function()
-         -- 结算输赢（需要实现具体逻辑）
-        self:settleGame()
-    end)
+    --local delay2 = cc.DelayTime:create(1) -- 发牌时间 + 额外延迟
+    --local unfoldAction2 = cc.CallFunc:create(function()
+    --     -- 结算输赢（需要实现具体逻辑）
+    --    self:settleGame()
+    --end)
     local sequence = cc.Sequence:create(delay1,unfoldAction1,delay2,unfoldAction2)
     self:runAction(sequence)
 end
@@ -518,7 +519,7 @@ function MainScene:flyChipToButton(key)
 end
 
 function MainScene:createFrameAnimation(startIndex,endIndex,path,sprite,callFuncAction)
-    print("======MainScene:createFrameAnimation")
+    print("======MainScene:createFrameAnimation,path:",path)
 
     -- 创建动画帧表
     self.frames = {}
@@ -534,6 +535,7 @@ function MainScene:createFrameAnimation(startIndex,endIndex,path,sprite,callFunc
 
     -- 创建动画对象
     local animation = cc.Animation:createWithSpriteFrames(self.frames, 0.1) -- 每帧0.1秒
+    animation:setLoops(1) -- 设置动画循环次数为1
     local animate = cc.Animate:create(animation)
 
 
@@ -552,7 +554,7 @@ end
 
 
 function MainScene:createFrameAnimation1(endIndex,path,pos)
-    print("======MainScene:createFrameAnimation")
+    print("======MainScene:createFrameAnimation11111")
 
     -- 创建动画帧表
     local frames = {}
@@ -575,6 +577,7 @@ function MainScene:createFrameAnimation1(endIndex,path,pos)
     --
     ---- 创建动画对象
     local animation = cc.Animation:createWithSpriteFrames(frames, 0.1) -- 每帧0.1秒
+    animation:setLoops(1) -- 设置动画循环次数为1
     local animate = cc.Animate:create(animation)
     --
 
@@ -582,7 +585,6 @@ function MainScene:createFrameAnimation1(endIndex,path,pos)
     local sprite = cc.Sprite:createWithSpriteFrame(frames[1])
     -- 创建回调函数动作
     local callFuncAction = cc.CallFunc:create(function()
-
           sprite:removeFromParent()
     end)
 
@@ -598,6 +600,7 @@ end
 
 
 function MainScene:createFrameAnimationCommon(endIndex,path,pos,onAnimationComplete)
+    print("======进入createFrameAnimationCommon，endIndex：",endIndex)
     -- 创建动画帧表
     local frames = {}
     for i = 1, endIndex do
@@ -624,6 +627,7 @@ function MainScene:createFrameAnimationCommon(endIndex,path,pos,onAnimationCompl
 
     -- 创建动画对象
     local animation = cc.Animation:createWithSpriteFrames(frames, 0.1) -- 每帧0.1秒
+    animation:setLoops(1) -- 设置动画循环次数为1
     local animate = cc.Animate:create(animation)
 
     -- 创建精灵并运行动画
